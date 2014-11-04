@@ -5,6 +5,12 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 		$scope.global = Global;  
 		$scope.layout = 'grid';
 		$scope.rate = 5;
+		// datePicker options to show only year with list view
+		$scope.dateOptions = {
+		    'year-format': '\'yyyy\'',
+		    'datepicker-mode':'\'year\'',
+		    'min-mode':'year'   };
+
 		// Choice list for multi select fields
 		// TODO : Dynamic list loaded from external class 
 		$scope.inputGenres = [
@@ -23,6 +29,63 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 		];  
 		$scope.stars = [{id: 'star1', name:''}];
 
+		// function to check authentification
+		$scope.hasAuthorization = function(video) {
+		if (!video || !video.user) return false;
+			return $scope.global.isAdmin || video.user._id === $scope.global.user._id;
+		};
+		// function to search field and filtering results and search only in some fields.
+	    $scope.searchFilter = function (obj) {
+	        var re = new RegExp($scope.searchText, 'i');
+	        return !$scope.searchText || re.test(obj.title) || re.test(new Date(obj.releaseDate).getFullYear()) || re.test(obj.nationality)  || re.test(obj.genres)  || re.test(obj.stars) || re.test(obj.stars) || re.test(obj.director) ;
+	    };	
+
+	    // function to filter date only if filled
+	    $scope.dateFilter = function (obj) {
+	    	if($scope.date) {
+	    		if(new Date(obj.releaseDate).getFullYear() === new Date($scope.date).getFullYear()) {
+	    			return true;
+	    		}
+		    	else {
+		    		return false;
+		    	}
+	    	} else {
+	    		return true;
+	    	}
+	    };	
+	    // functio to filter dropdown multi select only if ticked
+	    $scope.dropdownFilter = function(obj, item, dropdownList) {
+			if($scope.isTicked(dropdownList))
+			{
+				var ticked = $scope.dropDownToList(dropdownList);
+				for (var i in ticked) {
+					if (obj.indexOf(ticked[i]) !== -1) {
+						return true;
+					}
+				}
+				return false;
+			} else {
+				return true;
+			}
+		};
+
+		$scope.genresFilter = function(obj, item) {
+			return $scope.dropdownFilter(obj.genres, item, $scope.inputGenres);
+		};
+
+		$scope.nationalitiesFilter = function(obj, item) {
+			return $scope.dropdownFilter(obj.nationality, item, $scope.inputNationalities);
+		};
+		// function to know if dropdown multi select is ticked
+		$scope.isTicked = function(dropdownList) {
+			for (var i in dropdownList) {
+				if (dropdownList[i].ticked === true) {
+					return true;
+				}
+			}
+			return false;
+
+		};
 
 		// function for date picker
 		$scope.openDate = function($event) {
@@ -30,18 +93,17 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 			$event.stopPropagation();
 			$scope.opened = true;
 		};
-
 		// function for add another star button
 		$scope.addStar = function() {
 			var item = $scope.stars.length+1;
 			$scope.stars.push({'id':'star'+item, 'name':''});
 		};
-
+		// function for delete star button	
 		$scope.removeStar = function() {
 			if($scope.stars.length > 1)
 				$scope.stars.pop();
 		};
-
+		// return id for ng-show star button
 		$scope.showStar = function(star) {
 			return star.id === $scope.stars[$scope.stars.length-1].id;
 		};
@@ -49,23 +111,15 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 		$scope.hoveringOver = function(value) {
 			$scope.overStar = value;
 		};
-		$scope.setImage = function(imageUrl) {
-	      		$scope.mainImageUrl = imageUrl;
-	    	};
-		// function to check authentification
-		$scope.hasAuthorization = function(video) {
-		if (!video || !video.user) return false;
-			return $scope.global.isAdmin || video.user._id === $scope.global.user._id;
-		};
-		
+		// function to get values from genres dropdown multi select
 		$scope.getGenres = function() {
 			return $scope.dropDownToList($scope.inputGenres);
 		};
-
+		// function to get nationalities from genres dropdown multi select
 		$scope.getNationalities = function() {
 			return $scope.dropDownToList($scope.inputNationalities);
 		};
-
+		// function to get values from dropdown multi select
 		$scope.dropDownToList = function(input){
 			var list = [];
 			for (var i in input)
@@ -75,7 +129,7 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 			}
 			return list;
 		};
-
+		// function to get stars 
 		$scope.getStars = function(){
 			var stars = [];
 			for (var i in $scope.stars)
@@ -84,7 +138,6 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 			}
 			return stars;
 		};
-
 		// fuction to create new video (validation form)
 		$scope.create = function(isValid) {
 			if (isValid) {
@@ -116,6 +169,7 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 				this.genres = [];
 				this.images = [];
 				this.director = '';
+				this.rat = 5;
 				this.path = '';
 			} else {
 				$scope.submitted = true;
