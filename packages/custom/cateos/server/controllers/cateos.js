@@ -7,6 +7,13 @@ var mongoose = require('mongoose'),
   Video = mongoose.model('Video'),
   _ = require('lodash');
 
+
+var fromTheMovieDb = function (obj) {
+  // TODO translate from themoviedb.com
+  console.log(obj);
+
+};
+
 /**
  * Find video by id
  */
@@ -36,6 +43,28 @@ exports.create = function(req, res) {
 
   });
 };
+
+/**
+ * Import an video from different api models
+ */
+exports.import = function(type, obj) {
+  if(type === 'themoviedb') {
+    fromTheMovieDb(obj);
+  }
+  //TODO : add system user
+  /*video.save(function(err) {
+    if (err) {
+      console.log(err);
+      return res.json(500, {
+        error: 'Cannot save the video : ' + err
+      });
+    }
+    res.json(video);
+
+  });*/
+};
+
+
 
 /**
  * Update an video
