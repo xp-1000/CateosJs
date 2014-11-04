@@ -3,7 +3,7 @@
 // Module dependencies.
 
 var mongoose = require('mongoose'),
-  Video = mongoose.model('Video'),
+  VideoModel = mongoose.model('Video'),
   _ = require('lodash');
 
 // dedicated translation function for themoviedb video details
@@ -21,7 +21,7 @@ var fromTheMovieDb = function (obj) {
     companies.push(obj.details.production_companies[i].name);
   }
 
-  var video = new Video({
+  var video = new VideoModel({
     path : obj.path,
     details : {
       title : obj.details.title,
@@ -59,7 +59,7 @@ exports.import = function(type, obj) {
 // Find video by id
 
 exports.video = function(req, res, next, id) {
-  Video.load(id, function(err, video) {
+  VideoModel.load(id, function(err, video) {
     if (err) return next(err);
     if (!video) return next(new Error('Failed to load video ' + id + ' : ' + err));
     req.video = video;
@@ -70,7 +70,7 @@ exports.video = function(req, res, next, id) {
 // Create an video
 
 exports.create = function(req, res) {
-  var video = new Video(req.body);
+  var video = new VideoModel(req.body);
   video.user = req.user;
   video.save(function(err) {
     if (err) {
@@ -118,6 +118,16 @@ exports.destroy = function(req, res) {
   });
 };
 
+exports.destroyVideoWithPath = function(filepath) {
+  VideoModel.findOneAndRemove({path:filepath}, function(err) {
+    if (err) {
+      console.log("Can't remove the video " + filepath + ". " + err);
+    } else {
+      console.log("Video " + filepath + " removed from database");
+    }
+  })  
+}
+
 // Show an video
 
 exports.show = function(req, res) {
@@ -127,7 +137,7 @@ exports.show = function(req, res) {
 // List of videos
 
 exports.all = function(req, res) {
-  Video.find().sort('-created').populate('user', 'name username').exec(function(err, videos) {
+  VideoModel.find().sort('-created').populate('user', 'name username').exec(function(err, videos) {
     if (err) {
       return res.json(500, {
         error: 'Cannot list the videos : ' + err
