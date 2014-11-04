@@ -25,6 +25,7 @@ angular.module('mean.cateos').config(['$stateProvider',
 
     // states for my app
     $stateProvider
+      // Main page which provide video list in grid
       .state('all videos', {
         url: '/videos',
         templateUrl: 'cateos/views/list.html',
@@ -32,13 +33,15 @@ angular.module('mean.cateos').config(['$stateProvider',
           loggedin: checkLoggedin
         }
       })
-      .state('create video', {
+      // Page to create new video
+      /*.state('create video', {
         url: '/videos/create',
         templateUrl: 'cateos/views/create.html',
         resolve: {
           loggedin: checkLoggedin
         }
-      })
+      })*/
+      // Page to edit existing video
       .state('edit video', {
         url: '/videos/:videoId/edit',
         templateUrl: 'cateos/views/edit.html',
@@ -46,6 +49,7 @@ angular.module('mean.cateos').config(['$stateProvider',
           loggedin: checkLoggedin
         }
       })
+      // Page view to inform about one specific video
       .state('video by id', {
         url: '/videos/:videoId',
         templateUrl: 'cateos/views/view.html',
@@ -53,6 +57,7 @@ angular.module('mean.cateos').config(['$stateProvider',
           loggedin: checkLoggedin
         }
       })
+      // Page to show and modify configuration
       .state('configuration', {
         url: '/config',
         templateUrl: 'cateos/views/config.html',

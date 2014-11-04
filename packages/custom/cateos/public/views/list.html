@@ -39,8 +39,8 @@
       <div class="col-md-2">
         <select class="form-control" ng-model="orderProp" placeholder="Sorting">
           <option value="">No sorting</option>
-          <option value="title">Alphabetical</option>
-          <option value="releaseDate">Date</option>
+          <option value="details.title">Alphabetical</option>
+          <option value="details.releaseDate">Date</option>
         </select>
       </div>
     </p>
@@ -61,8 +61,8 @@
     <div class="col-md-12" ng-show="layout == 'grid'">
       <ul  class="grid">
         <!-- A view with big photos and no text -->
-        <li ng-repeat="video in videos | filter:searchFilter | filter:dateFilter | filter:nationalitiesFilter | filter:genresFilter | orderBy:orderProp">
-          <a data-ng-href="#!/videos/{{video._id}}"><img class="video-pic" ng-src="{{video.details.images[0]}}" /></a>
+        <li ng-repeat="video in videos | filter:searchFilter | filter:dateFilter | filter:nationalitiesFilter | filter:genresFilter | orderBy:orderProp:false">
+          <a data-ng-href="#!/videos/{{video._id}}"><img ng-src="{{video.details.images[0]}}" /></a>
         </li>
       </ul>
     </div>
@@ -71,7 +71,7 @@
         <!-- A compact view smaller photos and titles -->
         <li ng-repeat="video in videos | filter:searchFilter | filter:dateFilter | filter:nationalitiesFilter | filter:genresFilter | orderBy:orderProp">
           <div class="row">
-            <a href="#!/videos/{{video._id}}"><img class="video-pic" ng-src="{{video.details.images[0]}}" /></a>
+            <a href="#!/videos/{{video._id}}"><img ng-src="{{video.details.images[0]}}" /></a>
             <div class="col-md-4">
               <a class="description" href="#!/videos/{{video._id}}">{{video.details.title}}</a>
             </div>

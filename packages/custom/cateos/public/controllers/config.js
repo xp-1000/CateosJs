@@ -3,7 +3,7 @@
 angular.module('mean.cateos').controller('ConfigController', ['$scope', '$stateParams', '$location', 'Global', 'Config',
 	function($scope, $stateParams, $location, Global, Config) {
 		$scope.global = Global;  
-
+		// configured directories list variable
 		$scope.directories = [{id: 'directory1', name:''}];
 
 		// function for add another directory button
@@ -21,7 +21,7 @@ angular.module('mean.cateos').controller('ConfigController', ['$scope', '$stateP
 			return directory.id === $scope.directories[$scope.directories.length-1].id;
 		};
 
-		// function to get directories 
+		// Get all directories from field to load it in object 
 		$scope.getDirectories = function(){
 			var directories = [];
 			for (var i in $scope.directories)
@@ -37,7 +37,7 @@ angular.module('mean.cateos').controller('ConfigController', ['$scope', '$stateP
 			return $scope.global.isAdmin;
 		};
 
-
+		// get new conf and send it to backend api
 		$scope.update = function(isValid) {
 			if (isValid) {
 				$scope.config.synchro.db = $scope.getDirectories();
@@ -49,6 +49,7 @@ angular.module('mean.cateos').controller('ConfigController', ['$scope', '$stateP
 			}
 		};
 
+		// get current configuration from backend api
 		$scope.find = function() {
 			Config.query(function(configs) {
 				var config = configs[0];

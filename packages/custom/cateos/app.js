@@ -25,11 +25,13 @@ Cateos.register(function(app, auth, database) {
     link: 'all videos'
   });
 
+  /*
   Cateos.menus.add({
     roles: ['authenticated'],
     title: 'Create',
     link: 'create video'
   });
+  */
 
   Cateos.menus.add({
     roles: ['authenticated'],
