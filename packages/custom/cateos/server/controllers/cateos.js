@@ -7,7 +7,6 @@ var mongoose = require('mongoose'),
   Video = mongoose.model('Video'),
   _ = require('lodash');
 
-
 /**
  * Find video by id
  */
@@ -93,6 +92,5 @@ exports.all = function(req, res) {
       });
     }
     res.json(videos);
-    console.log(videos);
   });
 };
