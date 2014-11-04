@@ -1,6 +1,5 @@
 'use strict';
 
-
 angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateParams', '$location', 'Global', 'Videos',
 	function($scope, $stateParams, $location, Global, Videos) {
 		$scope.global = Global;  
@@ -16,23 +15,16 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 			{name:'Drame',        ticked: false}
 		];  
 		$scope.inputNationalities = [
-			{name:'French',        ticked: false},
+			{name:'American',        ticked: false},
 			{name:'English',        ticked: false},
-			{name:'Spanish',        ticked: false},
-			{name:'German',        ticked: false}
+			{name:'French',        ticked: false},
+			{name:'German',        ticked: false},
+			{name:'Spanish',        ticked: false}
 		];  
 		$scope.stars = [{id: 'star1', name:''}];
 
 
-		// functions for date picker
-		$scope.today = function() {
-			$scope.date = new Date();
-		};
-
-		$scope.clearDate = function () {
-			$scope.date = null;
-		};
-
+		// function for date picker
 		$scope.openDate = function($event) {
 			$event.preventDefault();
 			$event.stopPropagation();
@@ -104,13 +96,13 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 					title: this.title,
 					nationality: $scope.getNationalities(),
 					description: this.description,
-					releaseDate: this.releaseDate,
+					releaseDate: this.date,
 					stars: $scope.getStars(),
 					genres: $scope.getGenres(),
 					rate: $scope.rate,
 					director: this.director,
 					// TODO : change this to dynamic (just for test)
-					path : ''
+					path : '/example/of/path'
 				});
 				// send video to api
 				video.$save(function(response) {

@@ -16,7 +16,7 @@
     <ul  class="grid">
       <!-- A view with big photos and no text -->
       <li ng-repeat="video in videos">
-        <a data-ng-href="#!/videos/{{video._id}}" target="_blank"><img ng-src="{{video.images[0]}}" /></a>
+        <a data-ng-href="#!/videos/{{video._id}}"><img class="video-pic" ng-src="{{video.images[0]}}" /></a>
       </li>
     </ul>
   </div>
@@ -24,8 +24,49 @@
     <ul  class="list">
       <!-- A compact view smaller photos and titles -->
       <li ng-repeat="video in videos">
-        <a href="{{video.title}}" target="_blank"><img ng-src="{{video.images[0]}}" /></a>
-        <p>{{video.title}}</p>
+        <div class="row">
+          <a href="#!/videos/{{video._id}}"><img class="video-pic" ng-src="{{video.images[0]}}" /></a>
+          <div class="col-md-4">
+            <a class="description" href="#!/videos/{{video._id}}">{{video.title}}</a>
+            <span data-ng-if="hasAuthorization(video)">
+              <a  href="/#!/videos/{{video._id}}/edit">
+                <i class="glyphicon glyphicon-edit"></i>
+              </a>
+              <a data-ng-click="remove(video);">
+                <i class="glyphicon glyphicon-trash"></i>
+              </a>
+            </span>
+          </div>
+          <div class="col-md-3">
+            <span class="description">Release date</span> : {{video.releaseDate | date:'MM/dd/yyyy'}}
+          </div>
+          <div class="col-md-3">
+            <rating ng-model="video.rate" max=10 readonly=true on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>
+          </div>
+          <span data-ng-if="hasAuthorization(video)">
+            <a  href="/#!/videos/{{video._id}}/edit">
+              <i class="glyphicon glyphicon-edit"></i>
+            </a>
+            <a data-ng-click="remove(video);">
+              <i class="glyphicon glyphicon-trash"></i>
+            </a>
+          </span>
+          <div class="col-md-4">
+            <span class="description">Nationality</span> : <span ng-repeat="nationality in video.nationality" >{{nationality}}{{$last ? '' : ', '}}</span>
+          </div>
+          <div class="col-md-6">
+            <span class="description">Genres</span> : <span ng-repeat="genre in video.genres" >{{genre}}{{$last ? '' : ', '}}</span>
+          </div>
+          <div class="col-md-4">
+            <span class="description">Director</span> : {{video.director}}
+          </div>
+          <div class="col-md-6">
+            <span class="description">Stars</span> : <span ng-repeat="star in video.stars" >{{star}}{{$last ? '' : ', '}}</span>
+          </div>
+          <div class="col-md-10">
+            {{video.description}}
+          </div>
+        </div>
       </li>
     </ul>
   </div>

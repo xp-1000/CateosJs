@@ -26,7 +26,7 @@
           <p class="input-group">
             <input type="text" class="form-control" datepicker-popup="MM/dd/yyyy" ng-model="date" is-open="opened" ng-required="true" close-text="Close" />
             <span class="input-group-btn">
-              <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+              <button type="button" class="btn btn-default" ng-click="openDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
             </span>
           </p>
         </div>
@@ -69,16 +69,34 @@
       </div>
     </div>
 
-    <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.stars.$invalid }" data-ng-repeat="star in stars">
-      	<label mean-token="'create-stars'" class="col-md-2 control-label" >Stars</label>
-	  		<div class="col-md-10">
-			  <input class="form-control" type="text" ng-model="star.name" name="stars" id="stars" placeholder="Star" required>	 
-			  <button class="btn btn-success" ng-show="showStar(star)" ng-click="addStar()">Add another star</button>
+<div>
+    <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.stars.$invalid }" ng-repeat-start="star in stars" ng-if="$first" >
+      <label mean-token="'create-stars'" class="col-md-2 control-label" >Stars</label>
+      <div class="col-md-10">
+        <input class="form-control" type="text" ng-model="star.name" name="stars" id="stars" placeholder="Star" required> 
+        <button class="btn btn-success" ng-show="showStar(star)" ng-click="addStar()">Add another star</button>
         <button class="btn btn-danger" ng-show="showStar(star)" ng-click="removeStar()">Remove this star</button>
-			  <div ng-show="submitted && videoForm.stars.$invalid" class="help-block">
-		        <p ng-show="videoForm.stars.$error.required">Stars is required</p>
-		      </div>
-			 </div>
+        <div ng-show="submitted && videoForm.stars.$invalid" class="help-block">
+          <p ng-show="videoForm.stars.$error.required">Stars is required</p>
+        </div>
+       </div>  
+    </div>
+
+    <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.stars.$invalid }" ng-repeat-end ng-if="!$first">
+      <div class="col-md-10 col-md-offset-2">
+        <input class="form-control" type="text" ng-model="star.name" name="stars" id="stars" placeholder="Star" required> 
+        <button class="btn btn-success" ng-show="showStar(star)" ng-click="addStar()">Add another star</button>
+        <button class="btn btn-danger" ng-show="showStar(star)" ng-click="removeStar()">Remove this star</button>
+        <div ng-show="submitted && videoForm.stars.$invalid" class="help-block">
+          <p ng-show="videoForm.stars.$error.required">Stars is required</p>
+        </div>
+       </div>  
+    </div>
+</div>
+
+      	
+ 
+			  
 
 	  	
 
