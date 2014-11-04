@@ -14,19 +14,19 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 
 		// Choice list for multi select fields
 		// TODO : Dynamic list loaded from external class 
-		$scope.inputGenres = [
+		$scope.inputGenres = [/*
 			{name:'Action',        ticked: false},
 			{name:'Romance',        ticked: false},
 			{name:'Science Fiction',        ticked: false},
 			{name:'Comedie',        ticked: false},
-			{name:'Drame',        ticked: false}
+			{name:'Drame',        ticked: false}*/
 		];  
-		$scope.inputNationalities = [
+		$scope.inputNationalities = [/*
 			{name:'American',        ticked: false},
 			{name:'English',        ticked: false},
 			{name:'French',        ticked: false},
 			{name:'German',        ticked: false},
-			{name:'Spanish',        ticked: false}
+			{name:'Spanish',        ticked: false}*/
 		];  
 		$scope.companies = [{id: 'company1', name:''}];
 
@@ -204,7 +204,7 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 				this.genres = [];
 				this.images = [];
 				this.link = '';
-				this.rat = 5;
+				this.rate = 5;
 				this.path = '';
 			} else {
 				$scope.submitted = true;
@@ -249,9 +249,30 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 			}
 		};
 
+		$scope.multiContains = function(array, pattern) {
+			for (var i in array) {
+				if (array[i].name === pattern ) {
+					return true;
+				}
+			}
+			return false;
+		};
+
 		$scope.find = function() {
 			Videos.query(function(videos) {
 				for (var i=0; i<videos.length; i+=1) {
+					var nationalities = videos[i].details.nationality;
+					for (var j=0; j<nationalities.length; j+=1) {
+						if (!$scope.multiContains($scope.inputNationalities, nationalities[j])) {
+							$scope.inputNationalities.push({name:nationalities[j], ticked: false});
+						}
+					}
+					var genres = videos[i].details.genres;
+					for (j=0; j<genres.length; j+=1) {
+						if (!$scope.multiContains($scope.inputGenres, genres[j])) {
+							$scope.inputGenres.push({name:genres[j], ticked: false});
+						}
+					}
 					if (!videos[i].user) {
 						videos[i].user={name:'Cateos'};
 					}
@@ -261,6 +282,7 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 		};
 
 		$scope.findOne = function() {
+			$scope.find();
 			Videos.get({
 				videoId: $stateParams.videoId
 				}, function(video) {
@@ -279,7 +301,9 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 						$scope.companies[i].id = i;
 					}
 					// load dropdown multi select values
+
 					var item = 0;
+
 					for (i in $scope.inputGenres)
 					{
 						if ($scope.inputGenres[i].name === video.details.genres[item])
