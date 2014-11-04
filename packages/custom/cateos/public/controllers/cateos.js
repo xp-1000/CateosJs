@@ -154,22 +154,20 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 
 		$scope.loadDetails = function() {
 			$scope.infos = [];
-			$scope.infosAudio = [];
-			$scope.infosVideo = [];
+			$scope.infosTracks = [];
 			for (var prop in $scope.video.infos) {
 		      var value = $scope.video.infos[prop];
 		      if($scope.video.infos.hasOwnProperty(prop)){
 		        if(value) {
-			        if(prop === 'audio_tracks') {
-			        	$scope.infosAudio = $scope.loadTracks(value);
-			        } else if(prop === 'video_tracks') {
-			        	$scope.infosVideo = $scope.loadTracks(value);
+			        if(prop === 'tracks') {
+			        	$scope.infosTracks = $scope.loadTracks(value);
 			        } else {
 			        	$scope.infos.push(prop);
 			    	}
 			    }
 		      }
 		   }
+		   console.log($scope.infosTracks);
 		};
 		// fuction to create new video (validation form)
 		$scope.create = function(isValid) {
