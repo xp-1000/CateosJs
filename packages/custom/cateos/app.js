@@ -27,8 +27,14 @@ Cateos.register(function(app, auth, database) {
 
   Cateos.menus.add({
     roles: ['authenticated'],
-    title: 'Create new video',
+    title: 'Create',
     link: 'create video'
+  });
+
+  Cateos.menus.add({
+    roles: ['authenticated'],
+    title: 'Config',
+    link: 'configuration'
   });
 
   // TODO : use for resources needs

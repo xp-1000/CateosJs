@@ -30,39 +30,3 @@ exports.getDetails = function(infos,config) {
 	}
 
 };
-
-
-
-/*
-'use strict';
-
-var Q = require('q');
-
-
-var info = function(res,mdb) {
-
-	var deferred = Q.defer();
-    mdb.movieInfo({id: res.results[0].id}, function(err, db) {
-        if(err) deferred.reject(err);
-        else {
-        	console.log(db);
-            deferred.resolve(db);
-        }
-    });
-    return deferred.promise;
-};
-
-var search = function(name,mdb) {
-	var deferred = Q.defer();
-	mdb.searchMovie({query: name }, deferred.makeNodeResolver());
-	console.log(deferred.promise);
-	return deferred.promise;
-};
-
-exports.getDetails = function(infos) {
-	var mdb = require('moviedb')('2384ed97dce589f4c05b7ed0ae0c6a71');
-	var name = infos.path.substring(infos.path.lastIndexOf('/')+1, infos.path.lastIndexOf('.'));
-	search(name,mdb)
-		.then(info(mdb))
-		.then();
-};*/
