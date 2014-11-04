@@ -1,11 +1,11 @@
 'use strict';
 
 // Module dependencies
-var videos = require('../controllers/cateos');
-var config = require('../controllers/config');
+var VideoCtlr = require('../controllers/VideoController');
+var ConfigurationCtlr = require('../controllers/ConfigurationController');
 
 // Start core initialization with loading configuration
-config.init();
+ConfigurationCtlr.init();
 
 
 // Authorization helpers
@@ -20,16 +20,16 @@ var hasAuthorization = function(req, res, next) {
 module.exports = function(Videos, app, auth) {
 
   app.route('/videos')
-    .get(videos.all)
-    .post(auth.requiresLogin, videos.create);
+    .get(VideoCtlr.all)
+    .post(auth.requiresLogin, VideoCtlr.create);
   app.route('/videos/:videoId')
-    .get(videos.show)
-    .put(auth.requiresLogin, hasAuthorization, videos.update)
-    .delete(auth.requiresLogin, hasAuthorization, videos.destroy);
+    .get(VideoCtlr.show)
+    .put(auth.requiresLogin, hasAuthorization, VideoCtlr.update)
+    .delete(auth.requiresLogin, hasAuthorization, VideoCtlr.destroy);
   app.route('/config')
-    .get(config.show)
-    .put(auth.requiresLogin, config.update);
+    .get(ConfigurationCtlr.show)
+    .put(auth.requiresLogin, ConfigurationCtlr.update);
 
   // Finish with setting up the videoId param
-  app.param('videoId', videos.video);
+  app.param('videoId', VideoCtlr.video);
 };
