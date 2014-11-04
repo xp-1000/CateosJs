@@ -3,7 +3,7 @@
     <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.title.$invalid }">
       <label mean-token="'edit-title'" for="title" class="col-md-2 control-label">Title</label>
       <div class="col-md-10">
-        <input name="title" type="text" class="form-control" data-ng-model="video.title" id="title" placeholder="Title" required>
+        <input name="title" type="text" class="form-control" data-ng-model="video.details.title" id="title" placeholder="Title" required>
         <div ng-show="submitted && articleForm.title.$invalid" class="help-block">
           <p ng-show="videoForm.title.$error.required">Title is required</p>
         </div>
@@ -13,7 +13,7 @@
     <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.description.$invalid }">
       <label mean-token="'edit-description'" for="description" class="col-md-2 control-label">Description</label>
       <div class="col-md-10">
-        <textarea name="description" data-ng-model="video.description" id="description" cols="30" rows="10" placeholder="Description" class="form-control" required></textarea>
+        <textarea name="description" data-ng-model="video.details.description" id="description" cols="30" rows="10" placeholder="Description" class="form-control" required></textarea>
         <div ng-show="submitted && videoForm.description.$invalid" class="help-block">
           <p ng-show="videoForm.description.$error.required">Description is required</p>
         </div>
@@ -24,7 +24,7 @@
       <label mean-token="'create-releaseDate'" for="releaseDate" class="col-md-2 control-label">ReleaseDate</label>
       <div class="col-md-10">
           <p class="input-group">
-            <input type="text" class="form-control" datepicker-popup="MM/dd/yyyy" ng-model="video.releaseDate" is-open="opened" ng-required="true" close-text="Close" />
+            <input type="text" class="form-control" datepicker-popup="MM/dd/yyyy" ng-model="video.details.releaseDate" is-open="opened" ng-required="true" close-text="Close" />
             <span class="input-group-btn">
               <button type="button" class="btn btn-default" ng-click="openDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
             </span>
@@ -65,7 +65,7 @@
     <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.director.$invalid }">
       <label mean-token="'edit-director'" class="col-md-2 control-label">Director</label>
       <div class="col-md-10">
-        <input name="director" type="text" class="form-control" data-ng-model="video.director" id="director" placeholder="Director" data-ng-model="video.director" required>
+        <input name="director" type="text" class="form-control" data-ng-model="video.details.director" id="director" placeholder="Director" data-ng-model="video.details.director" required>
         <div ng-show="submitted && videoForm.director.$invalid" class="help-block">
           <p ng-show="videoForm.director.$error.required">Director is required</p>
         </div>
