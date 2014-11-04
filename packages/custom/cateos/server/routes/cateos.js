@@ -1,12 +1,14 @@
 'use strict';
 
+// Module dependencies
 var videos = require('../controllers/cateos');
 var config = require('../controllers/config');
-// Start core initialization 
+
+// Start core initialization with loading configuration
 config.init();
 
 
-// Article authorization helpers
+// Authorization helpers
 var hasAuthorization = function(req, res, next) {
   if (!req.user.isAdmin && req.video.user.id !== req.user.id) {
     return res.send(401, 'User is not authorized');
@@ -14,6 +16,7 @@ var hasAuthorization = function(req, res, next) {
   next();
 };
 
+// API routes for front end communication
 module.exports = function(Videos, app, auth) {
 
   app.route('/videos')

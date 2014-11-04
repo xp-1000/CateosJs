@@ -1,15 +1,13 @@
 'use strict';
 
-/**
- * Module dependencies.
- */
+// Module dependencies.
+
 var mongoose = require('mongoose'),
   Video = mongoose.model('Video'),
   _ = require('lodash');
 
-
+// dedicated translation function for themoviedb video details
 var fromTheMovieDb = function (obj) {
-  // TODO translate from themoviedb.com
   var genres = [];
   for (var i in obj.details.genres) {
     genres.push(obj.details.genres[i].name);
@@ -45,9 +43,21 @@ var fromTheMovieDb = function (obj) {
   });
 };
 
-/**
- * Find video by id
- */
+// Import an video from different api models
+
+exports.import = function(type, obj) {
+  switch(type) {
+    case 'themoviedb' :
+      fromTheMovieDb(obj);
+      break;
+    default:
+      fromTheMovieDb(obj);
+  }
+
+};
+
+// Find video by id
+
 exports.video = function(req, res, next, id) {
   Video.load(id, function(err, video) {
     if (err) return next(err);
@@ -57,9 +67,8 @@ exports.video = function(req, res, next, id) {
   });
 };
 
-/**
- * Create an video
- */
+// Create an video
+
 exports.create = function(req, res) {
   var video = new Video(req.body);
   video.user = req.user;
@@ -75,21 +84,9 @@ exports.create = function(req, res) {
   });
 };
 
-/**
- * Import an video from different api models
- */
-exports.import = function(type, obj) {
-  if(type === 'themoviedb') {
-    fromTheMovieDb(obj);
-  }
 
-};
+// Update an video
 
-
-
-/**
- * Update an video
- */
 exports.update = function(req, res) {
   var video = req.video;
   video = _.extend(video, req.body);
@@ -105,9 +102,8 @@ exports.update = function(req, res) {
   });
 };
 
-/**
- * Delete an video
- */
+// Delete an video
+
 exports.destroy = function(req, res) {
   var video = req.video;
 
@@ -122,16 +118,14 @@ exports.destroy = function(req, res) {
   });
 };
 
-/**
- * Show an video
- */
+// Show an video
+
 exports.show = function(req, res) {
   res.json(req.video);
 };
 
-/**
- * List of videos
- */
+// List of videos
+
 exports.all = function(req, res) {
   Video.find().sort('-created').populate('user', 'name username').exec(function(err, videos) {
     if (err) {
