@@ -1,8 +1,8 @@
 <section data-ng-controller="VideosController">
   <form name="videoForm" class="form-horizontal col-md-6" role="form" novalidate>
     <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.title.$invalid }">
-      <label mean-token="'create-title'" class="col-md-3 control-label">Title</label>
-      <div class="col-md-9">
+      <label mean-token="'create-title'" class="col-md-2 control-label">Title</label>
+      <div class="col-md-10">
         <input name="title" type="text" class="form-control" data-ng-model="title" id="title" placeholder="Title" required>
         <div ng-show="submitted && videoForm.title.$invalid" class="help-block">
           <p ng-show="videoForm.title.$error.required">Title is required</p>
@@ -11,8 +11,8 @@
     </div>
 
     <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.description.$invalid }">
-      <label mean-token="'create-description'" for="description" class="col-md-3 control-label">Description</label>
-      <div class="col-md-9">
+      <label mean-token="'create-description'" for="description" class="col-md-2 control-label">Description</label>
+      <div class="col-md-10">
         <textarea name="description" data-ng-model="description" id="description" cols="30" rows="10" placeholder="Description" class="form-control" required></textarea>
         <div ng-show="submitted && videoForm.description.$invalid" class="help-block">
           <p ng-show="videoForm.description.$error.required">Description is required</p>
@@ -21,20 +21,34 @@
     </div>
 
     <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.releaseDate.$invalid }">
-      <label mean-token="'create-releaseDate'" for="releaseDate" class="col-md-3 control-label">ReleaseDate</label>
-      <div class="col-md-9">
-        <input type="date" ng-model="date" value="{{ date | date: 'yyyy-MM-dd' }}" name="releaseDate" id="releaseDate" class="form-control" required />
-        <div ng-show="submitted && videoForm.releaseDate  .$invalid" class="help-block">
-          <p ng-show="videoForm.releaseDate.$error.required">ReleaseDate is required</p>
+      <label mean-token="'create-releaseDate'" for="releaseDate" class="col-md-2 control-label">ReleaseDate</label>
+      <div class="col-md-10">
+          <p class="input-group">
+            <input type="text" class="form-control" datepicker-popup="MM/dd/yyyy" ng-model="date" is-open="opened" ng-required="true" close-text="Close" />
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          </p>
         </div>
+    </div>
+
+    <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.nationality.$invalid }">
+      <label mean-token="'create-nationality'" class="col-md-2 control-label">Nationality</label>
+      <div     
+        class="col-md-10"
+        multi-select
+        input-model="inputNationalities"
+        button-label="icon name"
+        item-label="icon name maker"
+        tick-property="ticked"
+      >
       </div>
     </div>
 
-
     <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.genres.$invalid }">
-      <label mean-token="'create-genres'" for="genres" class="col-md-3 control-label">Genres</label>
+      <label mean-token="'create-genres'" for="genres" class="col-md-2 control-label">Genres</label>
     	<div     
-  	    class="col-md-9"
+  	    class="col-md-10"
   	    multi-select
   	    input-model="inputGenres"
   	    button-label="icon name"
@@ -45,22 +59,9 @@
 	    </div>
     </div>
 
-    <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.nationality.$invalid }">
-      <label mean-token="'create-nationality'" class="col-md-3 control-label">Nationality</label>
-      <div     
-  	    class="col-md-9"
-  	    multi-select
-  	    input-model="inputNationalities"
-  	    button-label="icon name"
-  	    item-label="icon name maker"
-  	    tick-property="ticked"
-		  >
-		  </div>
-    </div>
-
     <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.director.$invalid }">
-      <label mean-token="'create-director'" class="col-md-3 control-label">Director</label>
-      <div class="col-md-9">
+      <label mean-token="'create-director'" class="col-md-2 control-label">Director</label>
+      <div class="col-md-10">
         <input name="director" type="text" class="form-control" data-ng-model="director" id="director" placeholder="Director" required>
         <div ng-show="submitted && videoForm.director.$invalid" class="help-block">
           <p ng-show="videoForm.director.$error.required">Director is required</p>
@@ -69,11 +70,11 @@
     </div>
 
     <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.stars.$invalid }" data-ng-repeat="star in stars">
-      	<label mean-token="'create-stars'" class="col-md-3 control-label" >Stars</label>
-	  		<div class="col-md-9">
+      	<label mean-token="'create-stars'" class="col-md-2 control-label" >Stars</label>
+	  		<div class="col-md-10">
 			  <input class="form-control" type="text" ng-model="star.name" name="stars" id="stars" placeholder="Star" required>	 
-			  <button class="btn btn-info" ng-show="showStar(star)" ng-click="addStar()">Add another star</button>
-        <button class="btn btn-info" ng-show="showStar(star)" ng-click="removeStar()">Remove this star</button>
+			  <button class="btn btn-success" ng-show="showStar(star)" ng-click="addStar()">Add another star</button>
+        <button class="btn btn-danger" ng-show="showStar(star)" ng-click="removeStar()">Remove this star</button>
 			  <div ng-show="submitted && videoForm.stars.$invalid" class="help-block">
 		        <p ng-show="videoForm.stars.$error.required">Stars is required</p>
 		      </div>
@@ -90,8 +91,8 @@
     -->
 
 <!--	<div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.stars.$invalid }">
-		<label mean-token="'create-rate'" class="col-md-3 control-label" for="choice" ng-show="showChoiceLabel(choice)">Choices</label>
-		<div class="col-md-9" >
+		<label mean-token="'create-rate'" class="col-md-2 control-label" for="choice" ng-show="showChoiceLabel(choice)">Choices</label>
+		<div class="col-md-10" >
 	
 		  <input type="text" class="form-control" ng-model="choice.name" id="stars" name="stars" placeholder="Choix">
 		  <div ng-show="submitted && videoForm.choice.name.$invalid" class="help-block">
@@ -102,8 +103,8 @@
 -->
 
     <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.rate.$invalid }">
-      <label mean-token="'create-rate'" class="col-md-3 control-label">Rate</label>
-      <div class="col-md-9">
+      <label mean-token="'create-rate'" class="col-md-2 control-label">Rate</label>
+      <div class="col-md-10">
         <rating ng-model="rate" max=10 readonly=false on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>
         <span class="label" ng-class="{'label-warning': overStar<3, 'label-info': overStar>=3 && overStar<7, 'label-success': overStar>=7}" ng-show="overStar && !isReadonly">{{overStar}}</span>
       </div>
@@ -114,7 +115,7 @@
   <ul>
     <li ng-repeat="genre in genres">
       <div>
-        <label mean-token="'create-genres'" for="genres" class="col-md-3 control-label">Genres</label>
+        <label mean-token="'create-genres'" for="genres" class="col-md-2 control-label">Genres</label>
         <input ng-model="genre.name">
       </div>
       [<a href ng-click="genres.splice($index, 1)">X</a>]
@@ -129,10 +130,14 @@
 -->
     
     <div class="form-group">
-      <div class="col-md-offset-3 col-md-9">
-        <button type="submit" class="btn btn-info" data-ng-submit="create(videoForm.$valid)" ng-click="create(videoForm.$valid)" >Submit</button>
+      <div class="col-md-offset-2 col-md-10">
+        <button type="submit" class="btn btn-primary" data-ng-submit="create(videoForm.$valid)" ng-click="create(videoForm.$valid)" >Submit</button>
 
       </div>
     </div>
   </form>
 </section>
+
+
+
+

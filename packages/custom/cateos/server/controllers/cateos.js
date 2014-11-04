@@ -28,6 +28,7 @@ exports.create = function(req, res) {
   video.user = req.user;
   video.save(function(err) {
     if (err) {
+      console.log(err);
       return res.json(500, {
         error: 'Cannot save the video : ' + err
       });

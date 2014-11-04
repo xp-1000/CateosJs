@@ -31,7 +31,7 @@ Cateos.register(function(app, auth, database) {
     link: 'create video'
   });
 
-  app.use('/files', express.static(config.root + '/files'));
+  //app.use('/{{package}}/assets/img/', express.static(config.root + '/img'));
 
   //Cateos.aggregateAsset('js','/packages/system/public/services/menus.js', {group:'footer', absolute:true, weight:-9999});
   //Cateos.aggregateAsset('js', 'test.js', {group: 'footer', weight: -1});
