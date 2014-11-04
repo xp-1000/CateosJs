@@ -1,0 +1,18 @@
+<section data-ng-controller="VideosController" data-ng-init="find()">
+  <ul class="videos unstyled">
+    <li data-ng-repeat="video in videos">
+      <h2>
+        <a data-ng-href="#!/videos/{{video._id}}">{{video.title}}</a>
+        <span data-ng-if="hasAuthorization(video)">
+          <a class="btn" href="/#!/videos/{{video._id}}/edit">
+            <i class="glyphicon glyphicon-edit"></i>
+          </a>
+          <a class="btn" data-ng-click="remove(video);">
+            <i class="glyphicon glyphicon-trash"></i>
+          </a>
+        </span>
+      </h2>
+    </li>
+  </ul>
+  <h1 data-ng-hide="!videos || videos.length">No videos yet. <br> Why don't you <a href="/#!/videos/create">Create One</a>?</h1>
+</section>

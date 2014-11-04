@@ -1,0 +1,74 @@
+<section data-ng-controller="VideosController" data-ng-init="findOne()">
+
+
+  <div>
+    <span>Added since {{video.created | date:'MM/dd/yyyy h:mm'}}</span> /
+    <span>By {{video.user.name}}</span>
+    <span data-ng-if="hasAuthorization(video)">
+      <a  href="/#!/videos/{{video._id}}/edit">
+        <i class="glyphicon glyphicon-edit"></i>
+      </a>
+      <a data-ng-click="remove(video);">
+        <i class="glyphicon glyphicon-trash"></i>
+      </a>
+    </span>
+  </div>
+
+  <tabset>
+    <tab heading="Video informations">
+      <div>
+        <img ng-src="{{video.images[0]}}" class="video-pic">
+        <h2 >{{video.title}}</h2>
+        <div>
+          <rating ng-model="video.rate" max=10 readonly=true on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>
+          <span class="label" ng-class="{'label-warning': overStar<3, 'label-info': overStar>=3 && overStar<7, 'label-success': overStar>=7}" ng-show="overStar && !isReadonly">{{overStar}}</span>
+        </div>
+        <div>
+          <span class="description">Release Date : </span><span>{{video.releaseDate | date:'MM/dd/yyyy'}}</span>
+        </div>
+        <div>
+          <span class="description">Nationality : </span>
+          <span ng-repeat="nationality in video.nationality" >{{nationality}}{{$last ? '' : ', '}}</span>
+        </div>
+        <div> 
+          <span class="description">Genres : </span>
+          <span ng-repeat="genre in video.genres" >{{genre}}{{$last ? '' : ', '}}</span>
+        </div>
+        <div>
+          <span class="description">Director : </span><span>{{video.director}}</span>
+        </div>
+        <p> 
+          <!--<span class="description">starqs : </span><span>{{video.stars}}</span>-->
+          <span class="description">Stars :</span>
+          <span ng-repeat="star in video.stars" >{{star}}{{$last ? '' : ', '}}</span>
+        </p>
+        <p>{{video.description}}</p>
+      </div>
+    </tab>
+    <tab heading="File properties">
+
+    </tab>
+  </tabset>
+<!--
+  <div>
+  <p> ddsdqsqsqd {{video.path}}</p>
+    <video controls src="bower_components/small.mp4">Video</video>
+  </div>
+
+
+  <span>{{video.created | date:'medium'}}</span> /
+  <span>{{video.user.name}}</span>
+    <h2 >{{video.title}}</h2>
+    <div  data-ng-if="hasAuthorization(video)">
+      <a  href="/#!/videos/{{video._id}}/edit">
+        <i class="glyphicon glyphicon-edit"></i>
+      </a>
+      <a data-ng-click="remove(video);">
+        <i class="glyphicon glyphicon-trash"></i>
+      </a>
+    </div>
+
+-->
+
+
+</section>
