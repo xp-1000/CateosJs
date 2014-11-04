@@ -10,13 +10,6 @@ var mongoose = require('mongoose'),
 
 mongoose.set('debug', true);
 
-// dedicated translation function for themoviedb video details
-var fromTheMovieDb = function (obj) {
-  Utils.computeHashForFile(obj.path)
-    .then(checkIfVideoAlreadyExists(obj.path))
-    .then(storeVideoInformation(obj))
-};
-
 function checkIfVideoAlreadyExists(filepath) {
   return function(filehash) {
     var deferred = Q.defer();
@@ -24,11 +17,11 @@ function checkIfVideoAlreadyExists(filepath) {
       if (err) {
         deferred.reject(err);
       }
-      if (!result) deferred.resolve(filehash)
-      else deferred.reject("This video already exists");
+      if (!result) deferred.resolve(filehash);
+      else deferred.reject('This video already exists');
     });
     return deferred.promise;
-  }
+  };
 }
 
 function storeVideoInformation(obj) {
@@ -67,8 +60,15 @@ function storeVideoInformation(obj) {
         console.log(err);
       }
     });
-  }  
+  };
 }
+
+// dedicated translation function for themoviedb video details
+var fromTheMovieDb = function (obj) {
+  Utils.computeHashForFile(obj.path)
+    .then(checkIfVideoAlreadyExists(obj.path))
+    .then(storeVideoInformation(obj));
+};
 
 // Import an video from different api models
 
@@ -80,7 +80,6 @@ exports.import = function(type, obj) {
     default:
       fromTheMovieDb(obj);
   }
-
 };
 
 // Find video by id
@@ -148,12 +147,12 @@ exports.destroy = function(req, res) {
 exports.destroyVideoWithPath = function(filepath) {
   VideoModel.findOneAndRemove({path:filepath}, function(err) {
     if (err) {
-      console.log("Can't remove the video " + filepath + ". " + err);
+      console.log('Can\'t remove the video ' + filepath + '. ' + err);
     } else {
-      console.log("Video " + filepath + " removed from database");
+      console.log('Video ' + filepath + ' removed from database');
     }
-  })  
-}
+  });
+};
 
 // Show an video
 
