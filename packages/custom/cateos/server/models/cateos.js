@@ -24,6 +24,10 @@ var VideoSchema = new Schema({
     required: true,
     trim: true
   },
+  hash: {
+    type:String,
+    required: true,
+  },
   // sub object which contains all video details
   details : {
     title: {
