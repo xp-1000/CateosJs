@@ -3,7 +3,7 @@
     <p>
       </div>
       <div class="col-md-2">
-        <input type="text" class="form-control" ng-model="searchText" placeholder="Search (title,date,casting)">
+        <input type="text" class="form-control" ng-model="searchText" placeholder="Search (title,date,companies)">
       </div>
       <div class="col-md-2">
           <p class="input-group">
@@ -89,17 +89,14 @@
                 <i class="glyphicon glyphicon-trash"></i>
               </a>
             </span>
-            <div class="col-md-4">
+            <div class="col-md-10">
               <span class="description">Nationality</span> : <span ng-repeat="nationality in video.details.nationality" >{{nationality}}{{$last ? '' : ', '}}</span>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-10">
               <span class="description">Genres</span> : <span ng-repeat="genre in video.details.genres" >{{genre}}{{$last ? '' : ', '}}</span>
             </div>
-            <div class="col-md-4">
-              <span class="description">Director</span> : {{video.details.director}}
-            </div>
-            <div class="col-md-6">
-              <span class="description">Stars</span> : <span ng-repeat="star in video.details.stars" >{{star}}{{$last ? '' : ', '}}</span>
+            <div class="col-md-10">
+              <span class="description">Companies</span> : <span ng-repeat="company in video.details.companies" >{{company}}{{$last ? '' : ', '}}</span>
             </div>
             <div class="col-md-10">
               {{video.details.description}}

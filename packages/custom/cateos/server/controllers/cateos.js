@@ -10,8 +10,39 @@ var mongoose = require('mongoose'),
 
 var fromTheMovieDb = function (obj) {
   // TODO translate from themoviedb.com
-  console.log(obj);
+  var genres = [];
+  for (var i in obj.details.genres) {
+    genres.push(obj.details.genres[i].name);
+  }
+  var nationality = [];
+  for (i in obj.details.production_countries) {
+    nationality.push(obj.details.production_countries[i].name);
+  }
+  var companies = [];
+  for (i in obj.details.production_companies) {
+    companies.push(obj.details.production_companies[i].name);
+  }
 
+  var video = new Video({
+    path : obj.infos.path,
+    details : {
+      title : obj.details.title,
+      description : obj.details.overview,
+      rate : obj.details.vote_average,
+      link : 'http://www.imdb.com/title/' + obj.details.imdb_id,
+      companies : companies,
+      genres : genres,
+      nationality : nationality,
+      images : [ 'http://image.tmdb.org/t/p/w300' + obj.details.poster_path ],
+      releaseDate : new Date(obj.details.release_date)
+    },  
+    infos : obj.infos
+  });
+  video.save(function(err) {
+    if (err) {
+      console.log(err);
+    }
+  });
 };
 
 /**

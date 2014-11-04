@@ -25,6 +25,7 @@ var watch = function(config, path) {
 			})
 	  	.then(function(details) {
 	  			video.details = details;
+	  			console.log(details);
 				Video.import(config.synchro.api.name, video);
 			});
 	});
