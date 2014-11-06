@@ -1,0 +1,19 @@
+h1 {
+	text-align: center
+}
+
+img.video-pic {
+  float: left;
+  height: 200px;
+  width: 200px;
+}
+
+.description {
+  font-weight: bold;
+}
+
+
+.testest {
+  display: inline-block;
+}
+
