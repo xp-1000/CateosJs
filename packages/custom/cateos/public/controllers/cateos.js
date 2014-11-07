@@ -1,8 +1,10 @@
 'use strict';
 
+
 angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateParams', '$location', 'Global', 'Videos',
 	function($scope, $stateParams, $location, Global, Videos) {
 		$scope.global = Global;  
+		$scope.layout = 'grid';
 		$scope.rate = 5;
 		// Choice list for multi select fields
 		// TODO : Dynamic list loaded from external class 
@@ -20,6 +22,22 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 			{name:'German',        ticked: false}
 		];  
 		$scope.stars = [{id: 'star1', name:''}];
+
+
+		// functions for date picker
+		$scope.today = function() {
+			$scope.date = new Date();
+		};
+
+		$scope.clearDate = function () {
+			$scope.date = null;
+		};
+
+		$scope.openDate = function($event) {
+			$event.preventDefault();
+			$event.stopPropagation();
+			$scope.opened = true;
+		};
 
 		// function for add another star button
 		$scope.addStar = function() {
@@ -90,7 +108,9 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 					stars: $scope.getStars(),
 					genres: $scope.getGenres(),
 					rate: $scope.rate,
-					director: this.director
+					director: this.director,
+					// TODO : change this to dynamic (just for test)
+					path : ''
 				});
 				// send video to api
 				video.$save(function(response) {
@@ -104,6 +124,7 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 				this.genres = [];
 				this.images = [];
 				this.director = '';
+				this.path = '';
 			} else {
 				$scope.submitted = true;
 			}

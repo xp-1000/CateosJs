@@ -19,30 +19,17 @@
         </div>
       </div>
     </div>
-<!--
-    <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.releaseDate.$invalid }">
-      <label mean-token="'edit-releaseDate'" for="releaseDate" class="col-md-2 control-label">ReleaseDate</label>
-      <div class="col-md-10">
-        <input type="date" ng-model="date" value="{{ date | date: 'yyyy-MM-dd' }}" name="releaseDate" id="releaseDate" class="form-control" data-ng-model="video.releaseDate" required />
-        <div ng-show="submitted && videoForm.releaseDate.$invalid" class="help-block">
-          <p ng-show="videoForm.releaseDate.$error.required">ReleaseDate is required</p>
-        </div>
-      </div>
-    </div>
 
--->
-    <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.genres.$invalid }">
-      <label mean-token="'edit-genres'" for="genres" class="col-md-2 control-label">Genres</label>
-      <div     
-        class="col-md-10"
-        multi-select
-        input-model="inputGenres"
-        button-label="icon name"
-        item-label="icon name maker"
-        tick-property="ticked"
-        required
-      >
-      </div>
+    <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.releaseDate.$invalid }">
+      <label mean-token="'create-releaseDate'" for="releaseDate" class="col-md-2 control-label">ReleaseDate</label>
+      <div class="col-md-10">
+          <p class="input-group">
+            <input type="text" class="form-control" datepicker-popup="MM/dd/yyyy" ng-model="video.releaseDate" is-open="opened" ng-required="true" close-text="Close" />
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          </p>
+        </div>
     </div>
 
     <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.nationality.$invalid }">
@@ -54,6 +41,20 @@
         button-label="icon name"
         item-label="icon name maker"
         tick-property="ticked"
+      >
+      </div>
+    </div>
+
+    <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.genres.$invalid }">
+      <label mean-token="'edit-genres'" for="genres" class="col-md-2 control-label">Genres</label>
+      <div     
+        class="col-md-10"
+        multi-select
+        input-model="inputGenres"
+        button-label="icon name"
+        item-label="icon name maker"
+        tick-property="ticked"
+        required
       >
       </div>
     </div>
@@ -72,7 +73,8 @@
         <label mean-token="'edit-stars'" class="col-md-2 control-label" >Stars</label>
         <div class="col-md-10">
         <input class="form-control" type="text" ng-model="star.name" name="stars" id="stars" placeholder="Star" required>  
-        <button class="btn btn-info" ng-show="showStar(star)" ng-click="addStar()">Add another star</button>
+        <button class="btn btn-success" ng-show="showStar(star)" ng-click="addStar()">Add another star</button>
+        <button class="btn btn-danger" ng-show="showStar(star)" ng-click="removeStar()">Remove this star</button>
         <div ng-show="submitted && videoForm.stars.$invalid" class="help-block">
             <p ng-show="videoForm.stars.$error.required">Stars is required</p>
           </div>
@@ -89,7 +91,7 @@
 
     <div class="form-group">
       <div class="col-md-offset-2 col-md-10">
-        <button type="submit" class="btn btn-info" data-ng-submit="update(videoForm.$valid)" ng-click="update(videoForm.$valid)" >Submit</button>
+        <button type="submit" class="btn btn-primary" data-ng-submit="update(videoForm.$valid)" ng-click="update(videoForm.$valid)" >Submit</button>
       </div>
     </div>
   </form>

@@ -1,5 +1,37 @@
 <section data-ng-controller="VideosController" data-ng-init="find()">
-  <ul class="videos unstyled">
+<div class="row">
+  <div class="col-md-12">
+    <div class="bar">
+
+      <!-- These two buttons switch the layout variable,
+         which causes the correct UL to be shown. -->
+
+      <a class="list-icon" ng-class="{active: layout == 'list'}" ng-click="layout = 'list'"></a>
+      <a class="grid-icon" ng-class="{active: layout == 'grid'}" ng-click="layout = 'grid'"></a>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12" ng-show="layout == 'grid'">
+    <ul  class="grid">
+      <!-- A view with big photos and no text -->
+      <li ng-repeat="video in videos">
+        <a data-ng-href="#!/videos/{{video._id}}" target="_blank"><img ng-src="{{video.images[0]}}" /></a>
+      </li>
+    </ul>
+  </div>
+  <div class="col-md-12" ng-show="layout == 'list'">
+    <ul  class="list">
+      <!-- A compact view smaller photos and titles -->
+      <li ng-repeat="video in videos">
+        <a href="{{video.title}}" target="_blank"><img ng-src="{{video.images[0]}}" /></a>
+        <p>{{video.title}}</p>
+      </li>
+    </ul>
+  </div>
+</div>
+
+ <!-- <ul class="videos unstyled">
     <li data-ng-repeat="video in videos">
       <h2>
         <a data-ng-href="#!/videos/{{video._id}}">{{video.title}}</a>
@@ -11,8 +43,9 @@
             <i class="glyphicon glyphicon-trash"></i>
           </a>
         </span>
-      </h2>
-    </li>
+      </h2>-->
+      <!--<img ng-src="/files/a.jpg" class="video-pic">-->
+   <!-- </li>
   </ul>
-  <h1 data-ng-hide="!videos || videos.length">No videos yet. <br> Why don't you <a href="/#!/videos/create">Create One</a>?</h1>
+  <h1 data-ng-hide="!videos || videos.length">No videos yet. <br> Why don't you <a href="/#!/videos/create">Create One</a>?</h1>-->
 </section>
