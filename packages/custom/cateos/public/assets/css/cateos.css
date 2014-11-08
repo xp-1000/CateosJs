@@ -4,15 +4,10 @@ h1 {
 
 img.video-pic {
   float: left;
-  height: 200px;
-  width: 200px;
+  width: 275px;
+  margin-left : 1%;
 }
 
-img.video-pics {
-  float: left;
-  height: 100px;
-  width: 100px;
-}
 
 .description {
   font-weight: bold;
@@ -77,8 +72,8 @@ img.video-pics {
 
 ul.list{
 	list-style: none;
-	width: 500px;
 	margin: 0 auto;
+	margin-left : 1%;
 	text-align: left;
 }
 
