@@ -1,33 +1,86 @@
 <section data-ng-controller="VideosController" data-ng-init="find()">
-<div class="row">
-  <div class="col-md-12">
-    <div class="bar">
+  <div class="row">
+    <p>
+      </div>
+      <div class="col-md-2">
+        <input type="text" class="form-control" ng-model="searchText" placeholder="Search (title,date,casting)">
+      </div>
+      <div class="col-md-2">
+          <p class="input-group">
+            <!--<input type="text" class="form-control" datepicker-popup="yyyy" ng-model="date" is-open="opened" datepicker-mode="'month'" ng-required="true" close-text="Close" />-->
+            <input type="text" placeholder="Release date" ng-model="date" datepicker-popup="yyyy" class="form-control" is-open="opened" datepicker-options="dateOptions" show-button-bar="false" show-weeks="false"/>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="openDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          </p>
+      </div>
+      <div class="col-md-2">
+        <div     
+          multi-select
+          input-model="inputNationalities"
+          button-label="icon name"
+          item-label="icon name maker"
+          tick-property="ticked"
+          default-label="Nationality"
+        >
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div     
+          multi-select
+          input-model="inputGenres"
+          button-label="icon name"
+          item-label="icon name maker"
+          tick-property="ticked"
+          default-label="Genres"
+        >
+        </div>
+      </div>
+      <div class="col-md-2">
+        <select class="form-control" ng-model="orderProp" placeholder="Sorting">
+          <option value="">No sorting</option>
+          <option value="title">Alphabetical</option>
+          <option value="releaseDate">Date</option>
+        </select>
+      </div>
+    </p>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="bar">
 
-      <!-- These two buttons switch the layout variable,
-         which causes the correct UL to be shown. -->
+        <!-- These two buttons switch the layout variable,
+           which causes the correct UL to be shown. -->
 
-      <a class="list-icon" ng-class="{active: layout == 'list'}" ng-click="layout = 'list'"></a>
-      <a class="grid-icon" ng-class="{active: layout == 'grid'}" ng-click="layout = 'grid'"></a>
+        <a class="list-icon" ng-class="{active: layout == 'list'}" ng-click="layout = 'list'"></a>
+        <a class="grid-icon" ng-class="{active: layout == 'grid'}" ng-click="layout = 'grid'"></a>
+      </div>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-12" ng-show="layout == 'grid'">
-    <ul  class="grid">
-      <!-- A view with big photos and no text -->
-      <li ng-repeat="video in videos">
-        <a data-ng-href="#!/videos/{{video._id}}"><img class="video-pic" ng-src="{{video.images[0]}}" /></a>
-      </li>
-    </ul>
-  </div>
-  <div class="col-md-12" ng-show="layout == 'list'">
-    <ul  class="list">
-      <!-- A compact view smaller photos and titles -->
-      <li ng-repeat="video in videos">
-        <div class="row">
-          <a href="#!/videos/{{video._id}}"><img class="video-pic" ng-src="{{video.images[0]}}" /></a>
-          <div class="col-md-4">
-            <a class="description" href="#!/videos/{{video._id}}">{{video.title}}</a>
+
+  <div class="row">
+    <div class="col-md-12" ng-show="layout == 'grid'">
+      <ul  class="grid">
+        <!-- A view with big photos and no text -->
+        <li ng-repeat="video in videos | filter:searchFilter | filter:dateFilter | filter:nationalitiesFilter | filter:genresFilter | orderBy:orderProp">
+          <a data-ng-href="#!/videos/{{video._id}}"><img class="video-pic" ng-src="{{video.images[0]}}" /></a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-12" ng-show="layout == 'list'">
+      <ul  class="list">
+        <!-- A compact view smaller photos and titles -->
+        <li ng-repeat="video in videos | filter:searchFilter | filter:dateFilter | filter:nationalitiesFilter | filter:genresFilter | orderBy:orderProp">
+          <div class="row">
+            <a href="#!/videos/{{video._id}}"><img class="video-pic" ng-src="{{video.images[0]}}" /></a>
+            <div class="col-md-4">
+              <a class="description" href="#!/videos/{{video._id}}">{{video.title}}</a>
+            </div>
+            <div class="col-md-3">
+              <span class="description">Release date</span> : {{video.releaseDate | date:'MM/dd/yyyy'}}
+            </div>
+            <div class="col-md-3">
+              <rating ng-model="video.rate" max=10 readonly=true on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>
+            </div>
             <span data-ng-if="hasAuthorization(video)">
               <a  href="/#!/videos/{{video._id}}/edit">
                 <i class="glyphicon glyphicon-edit"></i>
@@ -36,57 +89,42 @@
                 <i class="glyphicon glyphicon-trash"></i>
               </a>
             </span>
+            <div class="col-md-4">
+              <span class="description">Nationality</span> : <span ng-repeat="nationality in video.nationality" >{{nationality}}{{$last ? '' : ', '}}</span>
+            </div>
+            <div class="col-md-6">
+              <span class="description">Genres</span> : <span ng-repeat="genre in video.genres" >{{genre}}{{$last ? '' : ', '}}</span>
+            </div>
+            <div class="col-md-4">
+              <span class="description">Director</span> : {{video.director}}
+            </div>
+            <div class="col-md-6">
+              <span class="description">Stars</span> : <span ng-repeat="star in video.stars" >{{star}}{{$last ? '' : ', '}}</span>
+            </div>
+            <div class="col-md-10">
+              {{video.description}}
+            </div>
           </div>
-          <div class="col-md-3">
-            <span class="description">Release date</span> : {{video.releaseDate | date:'MM/dd/yyyy'}}
-          </div>
-          <div class="col-md-3">
-            <rating ng-model="video.rate" max=10 readonly=true on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>
-          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+   <!-- <ul class="videos unstyled">
+      <li data-ng-repeat="video in videos">
+        <h2>
+          <a data-ng-href="#!/videos/{{video._id}}">{{video.title}}</a>
           <span data-ng-if="hasAuthorization(video)">
-            <a  href="/#!/videos/{{video._id}}/edit">
+            <a class="btn" href="/#!/videos/{{video._id}}/edit">
               <i class="glyphicon glyphicon-edit"></i>
             </a>
-            <a data-ng-click="remove(video);">
+            <a class="btn" data-ng-click="remove(video);">
               <i class="glyphicon glyphicon-trash"></i>
             </a>
           </span>
-          <div class="col-md-4">
-            <span class="description">Nationality</span> : <span ng-repeat="nationality in video.nationality" >{{nationality}}{{$last ? '' : ', '}}</span>
-          </div>
-          <div class="col-md-6">
-            <span class="description">Genres</span> : <span ng-repeat="genre in video.genres" >{{genre}}{{$last ? '' : ', '}}</span>
-          </div>
-          <div class="col-md-4">
-            <span class="description">Director</span> : {{video.director}}
-          </div>
-          <div class="col-md-6">
-            <span class="description">Stars</span> : <span ng-repeat="star in video.stars" >{{star}}{{$last ? '' : ', '}}</span>
-          </div>
-          <div class="col-md-10">
-            {{video.description}}
-          </div>
-        </div>
-      </li>
+        </h2>-->
+        <!--<img ng-src="/files/a.jpg" class="video-pic">-->
+     <!-- </li>
     </ul>
-  </div>
-</div>
-
- <!-- <ul class="videos unstyled">
-    <li data-ng-repeat="video in videos">
-      <h2>
-        <a data-ng-href="#!/videos/{{video._id}}">{{video.title}}</a>
-        <span data-ng-if="hasAuthorization(video)">
-          <a class="btn" href="/#!/videos/{{video._id}}/edit">
-            <i class="glyphicon glyphicon-edit"></i>
-          </a>
-          <a class="btn" data-ng-click="remove(video);">
-            <i class="glyphicon glyphicon-trash"></i>
-          </a>
-        </span>
-      </h2>-->
-      <!--<img ng-src="/files/a.jpg" class="video-pic">-->
-   <!-- </li>
-  </ul>
-  <h1 data-ng-hide="!videos || videos.length">No videos yet. <br> Why don't you <a href="/#!/videos/create">Create One</a>?</h1>-->
+    <h1 data-ng-hide="!videos || videos.length">No videos yet. <br> Why don't you <a href="/#!/videos/create">Create One</a>?</h1>-->
 </section>
