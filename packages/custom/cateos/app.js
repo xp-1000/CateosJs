@@ -15,7 +15,7 @@ var Cateos = new Module('cateos'),
  */
 Cateos.register(function(app, auth, database) {
 
-  //We enable routing. By default the Package Object is passed to the routes
+  //We enable   routing. By default the Package Object is passed to the routes
   Cateos.routes(app, auth, database);
 
   //We are adding a link to the main menu for all authenticated users
@@ -62,8 +62,6 @@ Cateos.register(function(app, auth, database) {
     absolute: true
   });
 
-
-  require('./server/core/synchro/synchro');
 
 
   return Cateos;

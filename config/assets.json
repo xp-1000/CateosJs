@@ -2,7 +2,6 @@
   "core": {
     "css": {
       "bower_components/build/css/dist.min.css": [
-	       "bower_components/isteven-angular-multiselect/angular-multi-select.css"
 	    ]
     },
     "js": {

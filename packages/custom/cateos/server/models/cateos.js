@@ -101,13 +101,16 @@ var ConfigSchema = new Schema({
     },
     interval : {
       type: String,
-      required: true,
       trim: true
     },
-    folders : [String],
     checkAtStart : {
       type: Boolean 
-    }
+    },
+    db : [ {
+        name : { type: String, trim: true },
+        path : { type: String, trim: true }
+      }
+    ]
   }
 });
 
