@@ -48,6 +48,7 @@ exports.update = function(req, res) {
 
   video.save(function(err) {
     if (err) {
+      console.log(err);
       return res.json(500, {
         error: 'Cannot update the video : ' + err
       });

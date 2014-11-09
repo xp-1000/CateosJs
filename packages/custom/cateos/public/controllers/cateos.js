@@ -9,7 +9,8 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 		$scope.dateOptions = {
 		    'year-format': '\'yyyy\'',
 		    'datepicker-mode':'\'year\'',
-		    'min-mode':'year'   };
+		    'min-mode':'year'   
+		};
 
 		// Choice list for multi select fields
 		// TODO : Dynamic list loaded from external class 
@@ -37,13 +38,13 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 		// function to search field and filtering results and search only in some fields.
 	    $scope.searchFilter = function (obj) {
 	        var re = new RegExp($scope.searchText, 'i');
-	        return !$scope.searchText || re.test(obj.title) || re.test(new Date(obj.releaseDate).getFullYear()) || re.test(obj.nationality)  || re.test(obj.genres)  || re.test(obj.stars) || re.test(obj.stars) || re.test(obj.director) ;
+	        return !$scope.searchText || re.test(obj.details.title) || re.test(new Date(obj.details.releaseDate).getFullYear()) || re.test(obj.details.nationality)  || re.test(obj.details.genres)  || re.test(obj.details.stars) || re.test(obj.details.director) ;
 	    };	
 
 	    // function to filter date only if filled
 	    $scope.dateFilter = function (obj) {
 	    	if($scope.date) {
-	    		if(new Date(obj.releaseDate).getFullYear() === new Date($scope.date).getFullYear()) {
+	    		if(new Date(obj.details.releaseDate).getFullYear() === new Date($scope.date).getFullYear()) {
 	    			return true;
 	    		}
 		    	else {
@@ -70,11 +71,11 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 		};
 
 		$scope.genresFilter = function(obj, item) {
-			return $scope.dropdownFilter(obj.genres, item, $scope.inputGenres);
+			return $scope.dropdownFilter(obj.details.genres, item, $scope.inputGenres);
 		};
 
 		$scope.nationalitiesFilter = function(obj, item) {
-			return $scope.dropdownFilter(obj.nationality, item, $scope.inputNationalities);
+			return $scope.dropdownFilter(obj.details.nationality, item, $scope.inputNationalities);
 		};
 		// function to know if dropdown multi select is ticked
 		$scope.isTicked = function(dropdownList) {
@@ -138,6 +139,38 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 			}
 			return stars;
 		};
+
+		$scope.loadTracks = function(tracks) {
+			var res = [];
+			for (var track in tracks) {
+	        	var props = [];
+        		for (var prop in tracks[track]) {
+        			props.push(prop);
+        		}
+        		res.push(props);
+        	}
+        	return res;
+		};
+
+		$scope.loadDetails = function() {
+			$scope.infos = [];
+			$scope.infosAudio = [];
+			$scope.infosVideo = [];
+			for (var prop in $scope.video.infos) {
+		      var value = $scope.video.infos[prop];
+		      if($scope.video.infos.hasOwnProperty(prop)){
+		        if(value) {
+			        if(prop === 'audio_tracks') {
+			        	$scope.infosAudio = $scope.loadTracks(value);
+			        } else if(prop === 'video_tracks') {
+			        	$scope.infosVideo = $scope.loadTracks(value);
+			        } else {
+			        	$scope.infos.push(prop);
+			    	}
+			    }
+		      }
+		   }
+		};
 		// fuction to create new video (validation form)
 		$scope.create = function(isValid) {
 			if (isValid) {
@@ -146,16 +179,18 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 				
 				// Create new video with model for mongo
 				var video = new Videos({
-					title: this.title,
-					nationality: $scope.getNationalities(),
-					description: this.description,
-					releaseDate: this.date,
-					stars: $scope.getStars(),
-					genres: $scope.getGenres(),
-					rate: $scope.rate,
-					director: this.director,
 					// TODO : change this to dynamic (just for test)
-					path : '/example/of/path'
+					path : '/example/of/path',
+					details : {
+						title: this.title,
+						nationality: $scope.getNationalities(),
+						description: this.description,
+						releaseDate: this.date,
+						stars: $scope.getStars(),
+						genres: $scope.getGenres(),
+						rate: $scope.rate,
+						director: this.director
+					}
 				});
 				// send video to api
 				video.$save(function(response) {
@@ -195,10 +230,10 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 		$scope.update = function(isValid) {
 			if (isValid) {
 				var video = $scope.video;
-				video.nationality = $scope.getNationalities();
-				video.stars = $scope.getStars();
-				video.genres = $scope.getGenres();
-				video.rate = $scope.rate;
+				video.details.nationality = $scope.getNationalities();
+				video.details.stars = $scope.getStars();
+				video.details.genres = $scope.getGenres();
+				video.details.rate = $scope.rate;
 				if (!video.updated) {
 			  		video.updated = [];
 				}
@@ -222,20 +257,20 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 				videoId: $stateParams.videoId
 				}, function(video) {
 					$scope.video = video;
-					$scope.rate = video.rate;
+					$scope.rate = video.details.rate;
 					// Load stars for dynamic fields
-					for (var i in video.stars)
+					for (var i in video.details.stars)
 					{
 						if(i>0)
 							$scope.stars.push({id: '', name:''});
-						$scope.stars[i].name = video.stars[i];
+						$scope.stars[i].name = video.details.stars[i];
 						$scope.stars[i].id = i;
 					}
 					// load dropdown multi select values
 					var item = 0;
 					for (i in $scope.inputGenres)
 					{
-						if ($scope.inputGenres[i].name === video.genres[item])
+						if ($scope.inputGenres[i].name === video.details.genres[item])
 						{
 							$scope.inputGenres[i].ticked = true;
 							item+=1;
@@ -245,13 +280,14 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 					item = 0;
 					for (i in $scope.inputNationalities)
 					{
-						if ($scope.inputNationalities[i].name === video.nationality[item])
+						if ($scope.inputNationalities[i].name === video.details.nationality[item])
 						{
 							$scope.inputNationalities[i].ticked = true;
 							item+=1;
 						}
 
 					}
+					$scope.loadDetails();
 			});
 		};
 	}

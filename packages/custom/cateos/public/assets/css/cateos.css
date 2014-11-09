@@ -2,9 +2,14 @@ h1 {
 	text-align: center
 }
 
+h3.category {
+	border-bottom : 1px solid ;
+	border-bottom-color: #DCDCDC;
+}
+
 img.video-pic {
   float: left;
-  width: 275px;
+  width: 200px;
   margin-left : 1%;
 }
 
