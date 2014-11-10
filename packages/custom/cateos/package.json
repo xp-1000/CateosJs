@@ -11,7 +11,10 @@
     "npm": "1.4.x"
   },
   "dependencies": {
-    "inotify" : "^1.2.1"
+    "inotify" : "^1.2.1",
+    "inotifywait" : "^1.7.0",
+    "mimovie" : "^1.0.0",
+    "moviedb" : "^0.1.9"
   },
   "license": "MIT"
 }

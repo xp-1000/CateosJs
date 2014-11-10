@@ -106,6 +106,10 @@ var ConfigSchema = new Schema({
     checkAtStart : {
       type: Boolean 
     },
+    api : {
+      name : { type: String, trim: true },
+      key : {type: String, trim: true}
+    },
     db : [ {
         name : { type: String, trim: true },
         path : { type: String, trim: true }
