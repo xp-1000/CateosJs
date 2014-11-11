@@ -82,17 +82,7 @@ exports.import = function(type, obj) {
   if(type === 'themoviedb') {
     fromTheMovieDb(obj);
   }
-  //TODO : add system user
-  /*video.save(function(err) {
-    if (err) {
-      console.log(err);
-      return res.json(500, {
-        error: 'Cannot save the video : ' + err
-      });
-    }
-    res.json(video);
 
-  });*/
 };
 
 
