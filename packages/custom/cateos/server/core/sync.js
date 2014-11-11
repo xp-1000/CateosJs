@@ -1,5 +1,6 @@
 'use strict';
 var Video = require('../controllers/cateos');
+var listeners = [];
 
 var loadInfos = function(filename) {
 	var Infos = require('./gatherers/infos');
@@ -13,6 +14,9 @@ var watch = function(config, path) {
 	var listener = new INotifyWait(path, { recursive: true });
 	listener.on('ready', function (filename) {
 	  	console.log('Watcher added for : ' + path);
+	});
+	listener.on('close', function () {
+	  	console.log('Watcher removed for : ' + path);
 	});
 	listener.on('add', function (filename) {
 	  console.log(filename + ' added');
@@ -29,6 +33,7 @@ var watch = function(config, path) {
 				Video.import(config.synchro.api.name, video);
 			});
 	});
+	return listener;
 
 };
 
@@ -36,8 +41,8 @@ var watch = function(config, path) {
 var browseConfig = function (config) {
 
 	var reps = config.synchro.db;
-	for (var i = 0; i<reps.length; i+=1) {
-		watch(config,reps[i].path); 
+	for (var i = 0; i<reps.length; i+=1) { 
+		listeners.push(watch(config,reps[i].path));
 	}
 };
 
@@ -45,3 +50,9 @@ exports.run = function(config) {
 	browseConfig(config);
 };
 
+exports.reload = function(config) {
+	for (var i in listeners) { 
+		listeners[i].close();
+	}
+	browseConfig(config);
+};

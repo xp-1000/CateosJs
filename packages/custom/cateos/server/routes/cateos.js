@@ -1,9 +1,10 @@
 'use strict';
 
 var videos = require('../controllers/cateos');
-//var config = require('../controllers/config');
+var config = require('../controllers/config');
 // Start core initialization 
-require('../core/init');
+config.init();
+
 
 // Article authorization helpers
 var hasAuthorization = function(req, res, next) {
@@ -22,6 +23,9 @@ module.exports = function(Videos, app, auth) {
     .get(videos.show)
     .put(auth.requiresLogin, hasAuthorization, videos.update)
     .delete(auth.requiresLogin, hasAuthorization, videos.destroy);
+  app.route('/config')
+    .get(config.show)
+    .put(auth.requiresLogin, config.update);
 
   // Finish with setting up the videoId param
   app.param('videoId', videos.video);

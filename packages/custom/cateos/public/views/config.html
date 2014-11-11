@@ -1,0 +1,77 @@
+<section data-ng-controller="ConfigController" data-ng-init="find()">
+	<form name="ConfigForm" class="form-horizontal col-md-6" role="form" novalidate>
+	    <div class="col-md-12">
+	    	<h3 class="category">Synchronization : </h3>
+	    </div>
+	    <div class="form-group" ng-class="{ 'has-error' : submitted && ConfigForm.type.$invalid }">
+	      <label mean-token="'edit-type'" for="type" class="col-md-2 control-label">Type</label>
+	      <div class="col-md-10">
+	        <input name="type" type="text" class="form-control" data-ng-model="config.synchro.type" id="type" placeholder="Type" required>
+	        <div ng-show="submitted && articleForm.type.$invalid" class="help-block">
+	          <p ng-show="ConfigForm.type.$error.required">Type is required</p>
+	        </div>
+	      </div>
+	    </div>
+	    <div>
+			<div class="form-group" ng-class="{ 'has-error' : submitted && ConfigForm.directories.$invalid }" ng-repeat-start="directory in directories" ng-if="$first" >
+			<label mean-token="'edit-directories'" class="col-md-2 control-label" >Directories</label>
+			<div class="col-md-10">
+			  <input class="form-control" type="text" ng-model="directory.name" name="dirName" id="dirName" placeholder="Name" required>  
+			  <input class="form-control" type="text" ng-model="directory.path" name="dirPath" id="dirPath" placeholder="Path" required>  
+			  <button class="btn btn-success" ng-show="showDirectory(directory)" ng-click="addDirectory()">Add another directory</button>
+			  <button class="btn btn-danger" ng-show="showDirectory(directory)" ng-click="removeDirectory()">Remove this directory</button>
+			  <div ng-show="submitted && ConfigForm.dirName.$invalid && ConfigForm.dirPath.$invalid" class="help-block">
+			    <p ng-show="ConfigForm.dirName.$error.required">Directories are required</p>
+			  </div>
+			</div>
+		</div>
+
+		<div class="form-group" ng-class="{ 'has-error' : submitted && ConfigForm.directories.$invalid }" ng-repeat-end ng-if="!$first">
+			<div class="col-md-10 col-md-offset-2">
+			  <input class="form-control" type="text" ng-model="directory.name" name="dirName" id="dirName" placeholder="Name" required>  
+			  <input class="form-control" type="text" ng-model="directory.path" name="dirPath" id="dirPath" placeholder="Path" required>  
+			  <button class="btn btn-success" ng-show="showDirectory(directory)" ng-click="addDirectory()">Add another directory</button>
+			  <button class="btn btn-danger" ng-show="showDirectory(directory)" ng-click="removeDirectory()">Remove this directory</button>
+			  <div ng-show="submitted && ConfigForm.dirName.$invalid && ConfigForm.dirPath.$invalid" class="help-block">
+			    <p ng-show="ConfigForm.dirName.$error.required">Directories are required</p>
+			  </div>
+			 </div>
+			</div>
+		</div>  
+	    <div class="col-md-12">
+	    	<h3 class="category">Gatherers : </h3>
+	    </div>
+	    <div class="form-group" ng-class="{ 'has-error' : submitted && ConfigForm.apiName.$invalid }">
+	      <label mean-token="'edit-apiName'" for="apiName" class="col-md-2 control-label">API</label>
+	      <div class="col-md-10">
+	        <input name="apiName" type="text" class="form-control" data-ng-model="config.synchro.api.name" id="apiName" placeholder="Api Name" required>
+	        <div ng-show="submitted && articleForm.apiName.$invalid" class="help-block">
+	          <p ng-show="ConfigForm.apiName.$error.required">Api Name is required</p>
+	        </div>
+	      </div>
+	    </div>
+	    <div class="form-group" ng-class="{ 'has-error' : submitted && ConfigForm.apiKey.$invalid }">
+	      <label mean-token="'edit-apiKey'" for="apiKey" class="col-md-2 control-label">Api Key</label>
+	      <div class="col-md-10">
+	        <input name="apiKey" type="text" class="form-control" data-ng-model="config.synchro.api.key" id="apiKey" placeholder="Api Key" required>
+	        <div ng-show="submitted && articleForm.apiKey.$invalid" class="help-block">
+	          <p ng-show="ConfigForm.apiKey.$error.required">Api Key is required</p>
+	        </div>
+	      </div>
+	      <!--<div class="btn-group" dropdown>
+		      <button type="button" class="btn btn-danger dropdown-toggle">
+		        <span class="caret"></span>
+		      </button>
+		      <ul class="dropdown-menu" role="menu">
+		        <li><a ng-click="dropdown($event,0)">Action</a></li>
+		      </ul>
+		    </div>-->
+	    </div>
+
+	    <div class="form-group">
+	      <div class="col-md-offset-2 col-md-10">
+	        <button type="submit" class="btn btn-primary" data-ng-submit="update(ConfigForm.$valid)" ng-click="update(ConfigForm.$valid)" >Submit</button>
+	      </div>
+	    </div>
+  	</form>
+</section>

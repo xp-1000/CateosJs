@@ -102,9 +102,7 @@ exports.import = function(type, obj) {
  */
 exports.update = function(req, res) {
   var video = req.video;
-
   video = _.extend(video, req.body);
-
   video.save(function(err) {
     if (err) {
       console.log(err);

@@ -108,7 +108,7 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 		$scope.showCompany = function(company) {
 			return company.id === $scope.companies[$scope.companies.length-1].id;
 		};
-		// function to get value for ranking companies
+		// function to get value for ranking 
 		$scope.hoveringOver = function(value) {
 			$scope.overStar = value;
 		};
@@ -238,6 +238,9 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 			  		video.updated = [];
 				}
 				video.updated.push(new Date().getTime());
+				if (video.user.name === 'Cateos') {
+					delete video.user;
+				}
 				video.$update(function() {
 			  		$location.path('videos/' + video._id);
 				});
@@ -248,7 +251,7 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 
 		$scope.find = function() {
 			Videos.query(function(videos) {
-				for (var i in videos) {
+				for (var i=0; i<videos.length; i+=1) {
 					if (!videos[i].user) {
 						videos[i].user={name:'Cateos'};
 					}

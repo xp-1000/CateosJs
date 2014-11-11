@@ -12,3 +12,14 @@ angular.module('mean.cateos').factory('Videos', ['$resource',
     });
   }
 ]);
+
+angular.module('mean.cateos').factory('Config', ['$resource',
+  function($resource) {
+    return $resource('config', {
+    }, {
+      update: {
+        method: 'PUT'
+      }
+    });
+  }
+]);

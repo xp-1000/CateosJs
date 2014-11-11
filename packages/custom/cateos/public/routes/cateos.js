@@ -52,6 +52,13 @@ angular.module('mean.cateos').config(['$stateProvider',
         resolve: {
           loggedin: checkLoggedin
         }
+      })
+      .state('configuration', {
+        url: '/config',
+        templateUrl: 'cateos/views/config.html',
+        resolve: {
+          loggedin: checkLoggedin
+        }
       });
   }
 ]);
