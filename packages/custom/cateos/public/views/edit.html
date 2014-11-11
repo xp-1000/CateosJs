@@ -62,27 +62,40 @@
       </div>
     </div>
 
-    <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.director.$invalid }">
-      <label mean-token="'edit-director'" class="col-md-2 control-label">Director</label>
+    <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.link.$invalid }">
+      <label mean-token="'edit-link'" class="col-md-2 control-label">Link</label>
       <div class="col-md-10">
-        <input name="director" type="text" class="form-control" data-ng-model="video.details.director" id="director" placeholder="Director" data-ng-model="video.details.director" required>
-        <div ng-show="submitted && videoForm.director.$invalid" class="help-block">
-          <p ng-show="videoForm.director.$error.required">Director is required</p>
+        <input name="link" type="text" class="form-control" data-ng-model="video.details.link" id="link" placeholder="http://www.imdb.com/title/:" data-ng-model="video.details.link" required>
+        <div ng-show="submitted && videoForm.link.$invalid" class="help-block">
+          <p ng-show="videoForm.link.$error.required">Link is required</p>
         </div>
       </div>
     </div>
 
-    <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.stars.$invalid }" data-ng-repeat="star in stars">
-        <label mean-token="'edit-stars'" class="col-md-2 control-label" >Stars</label>
+    <div>
+      <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.companies.$invalid }" ng-repeat-start="company in companies" ng-if="$first" >
+        <label mean-token="'edit-companies'" class="col-md-2 control-label" >Companies</label>
         <div class="col-md-10">
-        <input class="form-control" type="text" ng-model="star.name" name="stars" id="stars" placeholder="Star" required>  
-        <button class="btn btn-success" ng-show="showStar(star)" ng-click="addStar()">Add another star</button>
-        <button class="btn btn-danger" ng-show="showStar(star)" ng-click="removeStar()">Remove this star</button>
-        <div ng-show="submitted && videoForm.stars.$invalid" class="help-block">
-            <p ng-show="videoForm.stars.$error.required">Stars is required</p>
+          <input class="form-control" type="text" ng-model="company.name" name="companies" id="companies" placeholder="Company" required>  
+          <button class="btn btn-success" ng-show="showCompany(company)" ng-click="addCompany()">Add another company</button>
+          <button class="btn btn-danger" ng-show="showCompany(company)" ng-click="removeCompany()">Remove this company</button>
+          <div ng-show="submitted && videoForm.companies.$invalid" class="help-block">
+            <p ng-show="videoForm.companies.$error.required">Companies are required</p>
           </div>
-       </div>
-    </div>
+        </div>
+      </div>
+
+      <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.companies.$invalid }" ng-repeat-end ng-if="!$first">
+        <div class="col-md-10 col-md-offset-2">
+          <input class="form-control" type="text" ng-model="company.name" name="companies" id="companies" placeholder="Company" required>  
+          <button class="btn btn-success" ng-show="showCompany(company)" ng-click="addCompany()">Add another company</button>
+          <button class="btn btn-danger" ng-show="showCompany(company)" ng-click="removeCompany()">Remove this company</button>
+          <div ng-show="submitted && videoForm.companies.$invalid" class="help-block">
+            <p ng-show="videoForm.companies.$error.required">Companies are required</p>
+          </div>
+         </div>
+      </div>
+    </div>  
 
     <div class="form-group" ng-class="{ 'has-error' : submitted && videoForm.rate.$invalid }">
       <label mean-token="'edit-rate'" class="col-md-2 control-label">Rate</label>

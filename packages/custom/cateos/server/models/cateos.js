@@ -33,7 +33,7 @@ var VideoSchema = new Schema({
       type: Date,
       default: Date.now
     },
-    stars: [String],
+    companies: [String],
     genres: [String],
     images: [String],
     rate: {
@@ -49,7 +49,7 @@ var VideoSchema = new Schema({
       required: true,
       trim: true
     },
-    director: {
+    link: {
       type: String,
       required: true,
       trim: true

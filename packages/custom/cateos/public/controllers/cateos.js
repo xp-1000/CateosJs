@@ -28,7 +28,7 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 			{name:'German',        ticked: false},
 			{name:'Spanish',        ticked: false}
 		];  
-		$scope.stars = [{id: 'star1', name:''}];
+		$scope.companies = [{id: 'company1', name:''}];
 
 		// function to check authentification
 		$scope.hasAuthorization = function(video) {
@@ -38,7 +38,7 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 		// function to search field and filtering results and search only in some fields.
 	    $scope.searchFilter = function (obj) {
 	        var re = new RegExp($scope.searchText, 'i');
-	        return !$scope.searchText || re.test(obj.details.title) || re.test(new Date(obj.details.releaseDate).getFullYear()) || re.test(obj.details.nationality)  || re.test(obj.details.genres)  || re.test(obj.details.stars) || re.test(obj.details.director) ;
+	        return !$scope.searchText || re.test(obj.details.title) || re.test(new Date(obj.details.releaseDate).getFullYear()) || re.test(obj.details.nationality)  || re.test(obj.details.genres)  || re.test(obj.details.companies) ;
 	    };	
 
 	    // function to filter date only if filled
@@ -94,21 +94,21 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 			$event.stopPropagation();
 			$scope.opened = true;
 		};
-		// function for add another star button
-		$scope.addStar = function() {
-			var item = $scope.stars.length+1;
-			$scope.stars.push({'id':'star'+item, 'name':''});
+		// function for add another company button
+		$scope.addCompany = function() {
+			var item = $scope.companies.length+1;
+			$scope.companies.push({'id':'company'+item, 'name':''});
 		};
-		// function for delete star button	
-		$scope.removeStar = function() {
-			if($scope.stars.length > 1)
-				$scope.stars.pop();
+		// function for delete company button	
+		$scope.removeCompany = function() {
+			if($scope.companies.length > 1)
+				$scope.companies.pop();
 		};
-		// return id for ng-show star button
-		$scope.showStar = function(star) {
-			return star.id === $scope.stars[$scope.stars.length-1].id;
+		// return id for ng-show company button
+		$scope.showCompany = function(company) {
+			return company.id === $scope.companies[$scope.companies.length-1].id;
 		};
-		// function to get value for ranking stars
+		// function to get value for ranking companies
 		$scope.hoveringOver = function(value) {
 			$scope.overStar = value;
 		};
@@ -130,14 +130,14 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 			}
 			return list;
 		};
-		// function to get stars 
-		$scope.getStars = function(){
-			var stars = [];
-			for (var i in $scope.stars)
+		// function to get companies 
+		$scope.getCompanies = function(){
+			var companies = [];
+			for (var i in $scope.companies)
 			{
-				stars.push($scope.stars[i].name);
+				companies.push($scope.companies[i].name);
 			}
-			return stars;
+			return companies;
 		};
 
 		$scope.loadTracks = function(tracks) {
@@ -186,10 +186,10 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 						nationality: $scope.getNationalities(),
 						description: this.description,
 						releaseDate: this.date,
-						stars: $scope.getStars(),
+						companies: $scope.getCompanies(),
 						genres: $scope.getGenres(),
 						rate: $scope.rate,
-						director: this.director
+						link: this.link
 					}
 				});
 				// send video to api
@@ -200,10 +200,10 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 				this.title = '';
 				this.nationality = [];
 				this.description = '';
-				this.stars = [];
+				this.companies = [];
 				this.genres = [];
 				this.images = [];
-				this.director = '';
+				this.link = '';
 				this.rat = 5;
 				this.path = '';
 			} else {
@@ -231,7 +231,7 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 			if (isValid) {
 				var video = $scope.video;
 				video.details.nationality = $scope.getNationalities();
-				video.details.stars = $scope.getStars();
+				video.details.companies = $scope.getCompanies();
 				video.details.genres = $scope.getGenres();
 				video.details.rate = $scope.rate;
 				if (!video.updated) {
@@ -248,6 +248,11 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 
 		$scope.find = function() {
 			Videos.query(function(videos) {
+				for (var i in videos) {
+					if (!videos[i].user) {
+						videos[i].user={name:'Cateos'};
+					}
+				}
 				$scope.videos = videos;
 			});
 		};
@@ -256,15 +261,19 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 			Videos.get({
 				videoId: $stateParams.videoId
 				}, function(video) {
+					// set a fake system user if created by backend
+					if (!video.user) {
+						video.user={name:'Cateos'};
+					}
 					$scope.video = video;
 					$scope.rate = video.details.rate;
-					// Load stars for dynamic fields
-					for (var i in video.details.stars)
+					// Load companies for dynamic fields
+					for (var i in video.details.companies)
 					{
 						if(i>0)
-							$scope.stars.push({id: '', name:''});
-						$scope.stars[i].name = video.details.stars[i];
-						$scope.stars[i].id = i;
+							$scope.companies.push({id: '', name:''});
+						$scope.companies[i].name = video.details.companies[i];
+						$scope.companies[i].id = i;
 					}
 					// load dropdown multi select values
 					var item = 0;

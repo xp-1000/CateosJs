@@ -21,28 +21,25 @@
           <img class="video-pic" ng-src="{{video.details.images[0]}}" >
         </div>
         <div class="col-md-9">
-          <h2>{{video.details.title}}</h2>
+          <h2><a href="{{video.details.link}}">{{video.details.title}}</a></h2>
         </div>
         <div class="col-md-9">
           <rating ng-model="video.details.rate" max=10 readonly=true on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>
           <span class="label" ng-class="{'label-warning': overStar<3, 'label-info': overStar>=3 && overStar<7, 'label-success': overStar>=7}" ng-show="overStar && !isReadonly">{{overStar}}</span>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-9">
           <span class="description">Nationality</span> : <span ng-repeat="nationality in video.details.nationality" >{{nationality}}{{$last ? '' : ', '}}</span>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-9">
           <span class="description">Release Date</span> : <span>{{video.details.releaseDate | date:'MM/dd/yyyy'}}</span>
         </div>
-        <div class="col-md-5"> 
+        <div class="col-md-9"> 
           <span class="description">Genres</span> : <span ng-repeat="genre in video.details.genres" >{{genre}}{{$last ? '' : ', '}}</span>
         </div>
-        <div class="col-md-4">
-          <span class="description">Director</span> : <span>{{video.details.director}}</span>
-        </div>
         <div class="col-md-9"> 
-          <span class="description">Stars</span> : <span ng-repeat="star in video.details.stars" >{{star}}{{$last ? '' : ', '}}</span>
+          <span class="description">Companies</span> : <span ng-repeat="star in video.details.companies" >{{star}}{{$last ? '' : ', '}}</span>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-9">
           <p class="paragraph">{{video.details.description}}</p>
         </div>
       </div> 

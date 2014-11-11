@@ -36,6 +36,7 @@ exports.load = function() {
         console.log('Configuration does not exist, creating it');
         var defaultConf = {synchro:{type:'inotify',api:{name:'themoviedb',key:'2384ed97dce589f4c05b7ed0ae0c6a71'},db:[{name:'tmp', path:'/tmp'}]}};
         exports.create(defaultConf);
+        deferred.resolve(defaultConf);
       }
     });
     return deferred.promise;
