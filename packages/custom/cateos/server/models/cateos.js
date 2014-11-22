@@ -1,28 +1,30 @@
 'use strict';
 
-/**
- * Module dependencies.
- */
+// Module dependencies
+
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
-/**
- * Video Schema
- */
+// Video schema
+
 var VideoSchema = new Schema({
+  // video creation date on cateos
   created: {
     type: Date,
     default: Date.now
   },
+  // video owner, none if added by system
   user: {
     type: Schema.ObjectId,
     ref: 'User'
   },
+  // path to file access on disk
   path: {
     type: String,
     required: true,
     trim: true
   },
+  // sub object which contains all video details
   details : {
     title: {
       type: String,
@@ -49,12 +51,14 @@ var VideoSchema = new Schema({
       required: true,
       trim: true
     },
+    // ref link to video (currently imdb)
     link: {
       type: String,
       required: true,
       trim: true
     }
   },
+  // sub object which contains all file infos
   infos : { 
     video_tracks: [ { 
         width: { type: Number },
@@ -89,27 +93,23 @@ var VideoSchema = new Schema({
   }
 });
 
-/**
- * Configuration Schema
- */
+// Configuration Schema
+
 var ConfigSchema = new Schema({
+  // synchronization configuration
   synchro : {
+    // currently, only inotify
     type : {
       type: String,
       required: true,
       trim: true
     },
-    interval : {
-      type: String,
-      trim: true
-    },
-    checkAtStart : {
-      type: Boolean 
-    },
+    // currently, only themoviedb
     api : {
       name : { type: String, trim: true },
       key : {type: String, trim: true}
     },
+    // directries list to watch
     db : [ {
         name : { type: String, trim: true },
         path : { type: String, trim: true }
@@ -118,21 +118,41 @@ var ConfigSchema = new Schema({
   }
 });
 
-/**
- * Validations
- */
+// Validations
+
 VideoSchema.path('details.title').validate(function(title) {
   return !!title;
 }, 'Title cannot be blank');
 
-/**
- * Statics
- */
+VideoSchema.path('details.description').validate(function(description) {
+  return !!description;
+}, 'Description cannot be blank');
+
+VideoSchema.path('details.images').validate(function(images) {
+  return !!images.length;
+}, 'At least one image is mandatory');
+
+ConfigSchema.path('synchro.api.name').validate(function(name) {
+  return !!name;
+}, 'Api name cannot be blank');
+
+ConfigSchema.path('synchro.api.key').validate(function(key) {
+  return !!key;
+}, 'Api key cannot be blank');
+
+ConfigSchema.path('synchro.type').validate(function(type) {
+  return !!type;
+}, 'Type cannot be blank');
+
+// Statics
+
 VideoSchema.statics.load = function(id, cb) {
   this.findOne({
     _id: id
   }).populate('user', 'name username').exec(cb);
 };
+
+// Models exportation (to use in controller)
 
 mongoose.model('Video', VideoSchema);
 mongoose.model('Config', ConfigSchema);
