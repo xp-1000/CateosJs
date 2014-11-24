@@ -44,7 +44,7 @@ var watch = function(config, path) {
 };
 
 // run one listener for each configured directories
-var browseConfig = function (config) {s
+var browseConfig = function (config) {
 	var reps = config.synchro.db;
 	for (var i = 0; i<reps.length; i+=1) { 
 		listeners.push(watch(config,reps[i].path));
