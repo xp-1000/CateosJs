@@ -57,11 +57,11 @@
 
       <div class="row" ng-repeat="(Index, infosTrack) in infosTracks">
         <div class="col-md-12">
-          <h3 class="category">Track {{Index}} : </h3>
+          <h3 class="category">Track {{Index}} ({{video.infos.tracks[Index]['type']}}) : </h3>
         </div>
         <div ng-repeat="infoTrack in infosTrack">
-          <div class="col-md-6">{{infoTrack}}</div>
-          <div class="col-md-6">{{video.infos.tracks[Index][infoTrack]}}</div>
+            <div class="col-md-6">{{infoTrack}}</div>
+            <div class="col-md-6">{{video.infos.tracks[Index][infoTrack]}}</div>
         </div>
       </div>
 

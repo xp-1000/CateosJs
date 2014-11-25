@@ -145,7 +145,9 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 			for (var track in tracks) {
 	        	var props = [];
         		for (var prop in tracks[track]) {
-        			props.push(prop);
+        			if ((prop !== 'type') && (prop !== 'id')) {
+        				props.push(prop);
+        			}
         		}
         		res.push(props);
         	}
@@ -167,7 +169,6 @@ angular.module('mean.cateos').controller('VideosController', ['$scope', '$stateP
 			    }
 		      }
 		   }
-		   console.log($scope.infosTracks);
 		};
 		// fuction to create new video (validation form)
 		$scope.create = function(isValid) {
