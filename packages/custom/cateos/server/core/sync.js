@@ -30,6 +30,8 @@ var watch = function(config, path) {
 	  loadInfos(filename)	
 	  	.then(function(infos) {
 	  			video.infos = infos;
+	  			console.log('!!!! '+ infos.complete_name);
+	  			video.path = infos.complete_name;
 	  			console.log(infos);
 				var Details = require('./gatherers/details');
 				return Details.getDetails(infos,config.synchro.api);

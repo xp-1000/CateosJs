@@ -18,6 +18,12 @@ var VideoSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'User'
   },
+  // path to file access on disk
+  path: {
+    type: String,
+    required: true,
+    trim: true
+  },
   // sub object which contains all video details
   details : {
     title: {
