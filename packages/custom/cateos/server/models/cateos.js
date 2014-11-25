@@ -18,12 +18,6 @@ var VideoSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'User'
   },
-  // path to file access on disk
-  path: {
-    type: String,
-    required: true,
-    trim: true
-  },
   // sub object which contains all video details
   details : {
     title: {
@@ -58,8 +52,46 @@ var VideoSchema = new Schema({
       trim: true
     }
   },
-  // sub object which contains all file infos
+  // sub object which contains all file infos (mediainfo)
   infos : { 
+    tracks: [ { 
+        type: { type: String, trim: true },
+        id: { type: String, trim: true },
+        format_info: { type: String, trim: true },
+        format_profile: { type: String, trim: true },
+        codec_id_info: { type: String, trim: true },
+        duration: { type: String, trim: true },
+        bit_rate_mode: { type: String, trim: true },
+        bit_rate: { type: String, trim: true },
+        maximum_bit_rate: { type: String, trim: true },
+        width: { type: String, trim: true },
+        height: { type: String, trim: true },
+        display_aspect_ratio: { type: String, trim: true },
+        frame_rate_mode: { type: String, trim: true },
+        frame_rate: { type: String, trim: true },
+        color_space: { type: String, trim: true },
+        chroma_subsampling: { type: String, trim: true },
+        channel_s_: { type: String, trim: true },
+        sampling_rate: { type: String, trim: true },
+        bit_depth: { type: String, trim: true },
+        compression_mode: { type: String, trim: true },
+        stream_size: { type: String, trim: true },
+        writing_library: { type: String, trim: true },
+        language: { type: String, trim: true },
+        encoded_date: { type: Date },
+      } 
+    ],
+    format: { type: String, trim: true },
+    codec_id: { type: String, trim: true },
+    file_size: { type: String, trim: true },
+    duration: { type: String, trim: true },
+    overall_bit_rate: { type: String, trim: true },
+    writing_application: { type: String, trim: true },
+    tagged_date: { type: Date },
+    encoded_date: { type: Date }
+  }
+  // sub object which contains all file infos (mimovie)
+  /*infos : { 
     video_tracks: [ { 
         width: { type: Number },
         height: { type: Number },
@@ -90,7 +122,7 @@ var VideoSchema = new Schema({
     created: { type: Date },
     modified: { type: Date },
     menu: { type: Boolean } 
-  }
+  }*/
 });
 
 // Configuration Schema

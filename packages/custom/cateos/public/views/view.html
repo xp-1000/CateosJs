@@ -48,12 +48,24 @@
       <div class="row">
         <div class="col-md-12">
           <h3 class="category">General : </h3>
-        <div>
+        </div>
         <div ng-repeat="info in infos">
           <div class="col-md-6">{{info}}</div>
           <div class="col-md-6">{{video.infos[info]}}</div>
         </div>
       </div>
+
+      <div class="row" ng-repeat="(Index, infosTrack) in infosTracks">
+        <div class="col-md-12">
+          <h3 class="category">Track {{Index}} : </h3>
+        </div>
+        <div ng-repeat="infoTrack in infosTrack">
+          <div class="col-md-6">{{infoTrack}}</div>
+          <div class="col-md-6">{{video.infos.tracks[Index][infoTrack]}}</div>
+        </div>
+      </div>
+
+      <!-- For mimovie compatibility
       <div class="row" ng-repeat="(ivIndex, infoVideo) in infosVideo">
         <div class="col-md-12">
           <h3 class="category">Video track {{ivIndex}} : </h3>
@@ -75,7 +87,7 @@
             <div class="col-md-6">{{video.infos.audio_tracks[iaIndex][infoAudioTrack]}}</div>
           </div>
         </div>
-      </div>
+      </div>-->
     </tab>
   </tabset>
 <!--

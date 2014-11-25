@@ -22,7 +22,6 @@ var fromTheMovieDb = function (obj) {
   }
 
   var video = new Video({
-    path : obj.infos.path,
     details : {
       title : obj.details.title,
       description : obj.details.overview,
