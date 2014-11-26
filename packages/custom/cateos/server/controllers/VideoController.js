@@ -4,44 +4,71 @@
 
 var mongoose = require('mongoose'),
   VideoModel = mongoose.model('Video'),
-  _ = require('lodash');
+  _ = require('lodash'),
+  Utils = require('../core/utils/Utils'),
+  Q = require('q');
+
+mongoose.set('debug', true);
 
 // dedicated translation function for themoviedb video details
 var fromTheMovieDb = function (obj) {
-  var genres = [];
-  for (var i in obj.details.genres) {
-    genres.push(obj.details.genres[i].name);
-  }
-  var nationality = [];
-  for (i in obj.details.production_countries) {
-    nationality.push(obj.details.production_countries[i].name);
-  }
-  var companies = [];
-  for (i in obj.details.production_companies) {
-    companies.push(obj.details.production_companies[i].name);
-  }
-
-  var video = new VideoModel({
-    path : obj.path,
-    details : {
-      title : obj.details.title,
-      description : obj.details.overview,
-      rate : obj.details.vote_average,
-      link : 'http://www.imdb.com/title/' + obj.details.imdb_id,
-      companies : companies,
-      genres : genres,
-      nationality : nationality,
-      images : [ 'http://image.tmdb.org/t/p/w300' + obj.details.poster_path ],
-      releaseDate : new Date(obj.details.release_date)
-    },  
-    infos : obj.infos
-  });
-  video.save(function(err) {
-    if (err) {
-      console.log(err);
-    }
-  });
+  Utils.computeHashForFile(obj.path)
+    .then(checkIfVideoAlreadyExists(obj.path))
+    .then(storeVideoInformation(obj))
 };
+
+function checkIfVideoAlreadyExists(filepath) {
+  return function(filehash) {
+    var deferred = Q.defer();
+    VideoModel.findOne({path:filepath, hash:filehash}, function (err, result) {
+      if (err) {
+        deferred.reject(err);
+      }
+      if (!result) deferred.resolve(filehash)
+      else deferred.reject("This video already exists");
+    });
+    return deferred.promise;
+  }
+}
+
+function storeVideoInformation(obj) {
+  return function(hash) {
+    var genres = [];
+    for (var i in obj.details.genres) {
+      genres.push(obj.details.genres[i].name);
+    }
+    var nationality = [];
+    for (i in obj.details.production_countries) {
+      nationality.push(obj.details.production_countries[i].name);
+    }
+    var companies = [];
+    for (i in obj.details.production_companies) {
+      companies.push(obj.details.production_companies[i].name);
+    }
+    
+    var video = new VideoModel({
+      path : obj.path,
+      hash: hash,
+      details : {
+        title : obj.details.title,
+        description : obj.details.overview,
+        rate : obj.details.vote_average,
+        link : 'http://www.imdb.com/title/' + obj.details.imdb_id,
+        companies : companies,
+        genres : genres,
+        nationality : nationality,
+        images : [ 'http://image.tmdb.org/t/p/w300' + obj.details.poster_path ],
+        releaseDate : new Date(obj.details.release_date)
+      },  
+      infos : obj.infos
+    });
+    video.save(function(err) {
+      if (err) {
+        console.log(err);
+      }
+    });
+  }  
+}
 
 // Import an video from different api models
 
