@@ -13,6 +13,7 @@ angular.module('mean.cateos').factory('Videos', ['$resource',
   }
 ]);
 
+//Config service used for config REST endpoint
 angular.module('mean.cateos').factory('Config', ['$resource',
   function($resource) {
     return $resource('config', {
