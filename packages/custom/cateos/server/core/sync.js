@@ -1,7 +1,10 @@
 'use strict';
 
 // Module dependencies
-var Video = require('../controllers/cateos');
+var VideoCtlr = require('../controllers/VideoController'),
+	mongoose = require('mongoose'),
+  	VideoModel = mongoose.model('Video');
+  
 // global context for listerners interaction
 var listeners = [];
 
@@ -39,9 +42,13 @@ var watch = function(config, path) {
 	  	// get details part for new video
 	  	.then(function(details) {
 	  			video.details = details;
-				Video.import(config.synchro.api.name, video);
+				VideoCtlr.import(config.synchro.api.name, video);
 			});
 	});
+	listener.on('unlink', function(filename) {
+		console.log('Unlink event received for ' + filename);
+		VideoCtlr.destroyVideoWithPath(filename);
+	})
 	return listener;
 
 };
